@@ -24,7 +24,6 @@ module resuipt_contracts::resuipt_contracts {
 		Customer
 		Creates a receipt
 	*/
-	#[allow(lint(self_transfer))]
 	public fun createReceipt(merchant: address, amount: u64, ctx: &mut TxContext) {
 		let receipt = Receipt {
 			id: object::new(ctx),
@@ -63,19 +62,3 @@ module resuipt_contracts::resuipt_contracts {
 		increaseAmount(receipt, price);
 	}
 }
-
-/*
-
-packageID:			0x36a6995ea851800c90ad73e55852e4de032104957ef9cadfff11c543e7c54333
-walletAddress:	0x7c9aadae6eca7fca07aafc749d4e84c2416dbd69f5f965114383e3b233186e6f
-
-// Create Receipt
-sui client call --package 0x36a6995ea851800c90ad73e55852e4de032104957ef9cadfff11c543e7c54333 --module resuipt_contracts --function createReceipt --args "0x7c9aadae6eca7fca07aafc749d4e84c2416dbd69f5f965114383e3b233186e6f" "42"
-
-
-receiptId:			0x526ee8e650de62d0d7f0e5ad4fa445bdea64f815c7a5ccea3c9401d42341efc7
-
-// Add Item to Receipt
-sui client call --package 0x36a6995ea851800c90ad73e55852e4de032104957ef9cadfff11c543e7c54333 --module resuipt_contracts --function addItemToReceipt --args "0x526ee8e650de62d0d7f0e5ad4fa445bdea64f815c7a5ccea3c9401d42341efc7" "milk" "24"
-
-*/

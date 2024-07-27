@@ -7,27 +7,23 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      includeAssets: ["192.png", "512.png"],
+      registerType: "prompt",
+      includeAssets: ["icon.png", "logo.png", "logoText.png", "favicon.svg"],
       manifest: {
-        name: "Suiecpts",
-        short_name: "Suiecpts",
-        description: "Best Project",
+        name: "ReSuipt Merchant",
+        short_name: "ReSuipt Merchant",
+        description: "ReSuipt Merchant App",
         theme_color: "#ffffff",
         icons: [
           {
-            src: "192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "512.png",
-            sizes: "512x512",
+            src: "icon.png",
+            sizes: "500x500",
             type: "image/png",
           },
         ],
       },
       srcDir: "src",
-      registerType: "autoUpdate",
+      scope: "/",
       devOptions: { enabled: true },
     }),
   ],

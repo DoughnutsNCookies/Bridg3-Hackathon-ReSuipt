@@ -1,112 +1,134 @@
 import QRCode from "react-qr-code";
 import {
-  LuScanLine,
   LuHome,
-  LuTicket,
-  LuPieChart,
   LuUser2,
   LuSettings,
-  LuSettings2,
   LuHistory,
+  LuXCircle,
 } from "react-icons/lu";
+import { useState } from "react";
+
+interface Item {
+  name: string;
+  price: number;
+}
 
 function App() {
+  const [items, setItems] = useState<Item[]>([{ name: "42KL", price: 42.0 }]);
+
+  const addItem = () => {
+    const name = (
+      document.querySelector('input[type="text"]') as HTMLInputElement
+    ).value;
+    const price = parseFloat(
+      (document.querySelector('input[type="number"]') as HTMLInputElement).value
+    );
+
+    if (!name || !price) return;
+
+    setItems([...items, { name, price }]);
+
+    (document.querySelector('input[type="text"]') as HTMLInputElement).value =
+      "";
+    (document.querySelector('input[type="number"]') as HTMLInputElement).value =
+      "";
+  };
+
   return (
-    <div className="h-screen w-screen bg-sea">
-      <div className="h-[10vh] bg-cloud rounded-bl-xl rounded-br-xl">
-        <div className="flex justify-between px-5 pt-10 items-center">
-          <div className="flex max-h-full gap-2">
-            <div className="h-full">
-              <img src="logo2.webp" className="h-9" />
-            </div>
-          </div>
-          <div>
+    <div className="h-screen w-screen bg-sea flex justify-center ">
+      <div className="max-w-[425px]">
+        <div className="h-[8vh] sticky top-0 flex flex-col justify-center bg-cloud rounded-bl-xl rounded-br-xl">
+          <div className="flex justify-between px-5 items-center">
+            <img src="logoText.png" className="h-9" />
             <div className="px-4 py-1 rounded-lg bg-ocean">
-              <span className="font-medium text-cloud">Merchant</span>
+              <span className="text-cloud font-bold">Merchant</span>
             </div>
           </div>
         </div>
-      </div>
-      <div className="h-[82vh] bg-sea">
-        <div className="p-2">
-          <div className="border-1 bg-cloud rounded-xl">
-            <div className="flex justify-center pb-2 pt-5">
-              <QRCode value="Helloworld" className="h-[180px]" />
-            </div>
-            <div className="p-3">
-              <div className="">
-                <ul className="p-3">
-                  <li className="border-b border-opacity-15 border-ocean py-1">
-                    <div className="flex justify-between items-center pb-1">
-                      <div className="">
-                        <span>Milk</span>
-                      </div>
-                      <div className="">
-                        <span>$ 24.00</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="border-b border-opacity-15 border-ocean py-1">
-                    <div className="flex justify-between items-center pb-1">
-                      <div className="">
-                        <span>Cereal</span>
-                      </div>
-                      <div className="">
-                        <span>$ 230.00</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="border-b border-opacity-15 border-ocean py-1">
-                    <div className="flex justify-between items-center pb-1">
-                      <div className="">
-                        <span>Milo</span>
-                      </div>
-                      <div className="">
-                        <span>$ 12.00</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="border-b border-opacity-15 border-ocean py-1">
-                    <div className="flex justify-between items-center pb-1">
-                      <div className="">
-                        <span className="font-bold">Total</span>
-                      </div>
-                      <div className="">
-                        <span className="font-bold">$ 266.00</span>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+        <div className="min-h-[84vh] p-4 bg-sea text-center">
+          <h1 className="pt-8 text-4xl italic font-bold">SPH Store</h1>
+          <div className="pt-8">
+            <div className="border-1 bg-cloud rounded-xl">
+              <div className="flex justify-center pb-2 pt-5">
+                <QRCode value={JSON.stringify(items)} className="h-[180px]" />
               </div>
+              <ul className="p-4 flex flex-col gap-2">
+                {items.map((item) => (
+                  <li className="flex flex-row justify-between">
+                    <span>{item.name}</span>
+                    <div className="flex flex-row gap-2">
+                      <span>$ {item.price}</span>
+                      <button
+                        className="text-ocean rounded"
+                        onClick={() => {
+                          setItems(items.filter((i) => i !== item));
+                        }}
+                      >
+                        <LuXCircle size={25} color="red" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+                <div className="border border-ocean" />
+                <div className="flex flex-row justify-between font-bold">
+                  <span>Total</span>
+                  <div className="flex flex-row gap-2">
+                    <span>
+                      $ {items.reduce((acc, item) => acc + item.price, 0)}
+                    </span>
+                    <div className="w-[25px]"></div>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-4">
+            <div className="flex justify-between gap-2">
+              <input
+                type="text"
+                placeholder="Item"
+                className="w-1/2 p-2 border border-none rounded"
+              />
+              <input
+                type="number"
+                placeholder="Price"
+                className="w-1/2 p-2 border border-none rounded"
+              />
+              <button
+                className="px-4 py-2 bg-ocean text-cloud rounded"
+                onClick={addItem}
+              >
+                Add
+              </button>
             </div>
           </div>
         </div>
-      </div>
-      <div className="h-[8vh] bg-cloud rounded-tl-xl rounded-tr-xl">
-        <div className="flex justify-between px-5 items-center pt-2">
-          <div>
-            <div className="flex justify-center items-center">
-              <LuHome className="text-4xl" />
+        <div className="h-[8vh] sticky bottom-0 bg-cloud rounded-tl-xl rounded-tr-xl">
+          <div className="flex justify-between px-5 items-center pt-2">
+            <div>
+              <div className="flex justify-center items-center">
+                <LuHome className="text-4xl" />
+              </div>
+              <span>Home</span>
             </div>
-            <span>Home</span>
-          </div>
-          <div>
-            <div className="flex justify-center items-center">
-              <LuHistory className="text-4xl" />
+            <div>
+              <div className="flex justify-center items-center">
+                <LuHistory className="text-4xl" />
+              </div>
+              <span>History</span>
             </div>
-            <span>History</span>
-          </div>
-          <div>
-            <div className="flex justify-center items-center">
-              <LuUser2 className="text-4xl" />
+            <div>
+              <div className="flex justify-center items-center">
+                <LuUser2 className="text-4xl" />
+              </div>
+              <span>Profile</span>
             </div>
-            <span>Home</span>
-          </div>
-          <div>
-            <div className="flex justify-center items-center">
-              <LuSettings className="text-4xl" />
+            <div>
+              <div className="flex justify-center items-center">
+                <LuSettings className="text-4xl" />
+              </div>
+              <span>Settings</span>
             </div>
-            <span>Settings</span>
           </div>
         </div>
       </div>
