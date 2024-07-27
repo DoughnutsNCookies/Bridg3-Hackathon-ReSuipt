@@ -23,7 +23,7 @@ const PastReceiptCard = (props: PastReceiptProps) => {
       </CardHeader>
       <Divider />
       <CardBody>
-        <ul className="p-4 flex flex-col gap-2">
+        <ul className="py-4 flex flex-col gap-2">
           <div className="flex flex-row justify-between font-bold">
             <span>Item Name</span>
             <span>Price</span>
@@ -56,7 +56,7 @@ const PastReceiptCard = (props: PastReceiptProps) => {
             color="primary"
             size="sm"
             isExternal
-            href={`https://suiscan.xyz/testnet/object/${pastReceipt.txDigest}`}
+            href={`https://suiscan.xyz/testnet/tx/${pastReceipt.txDigest}`}
             showAnchorIcon
           >
             Tx: {pastReceipt.txDigest.slice(0, 6)}....
