@@ -1,4 +1,3 @@
-import { LuCopy } from "react-icons/lu";
 import { PastReceipt } from "../hooks/usePastReceipts";
 import {
   Card,
@@ -19,7 +18,7 @@ const PastReceiptCard = (props: PastReceiptProps) => {
   const { pastReceipt, index, length } = props;
 
   return (
-    <div className="pt-2 px-2">
+    <div className="pt-4 px-4">
       <Card>
         <CardHeader className="text-center flex flex-col w-full">
           <p className="text-3xl font-semibold">SPH Store</p>
