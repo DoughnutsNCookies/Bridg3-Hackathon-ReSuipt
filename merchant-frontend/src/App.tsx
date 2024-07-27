@@ -14,11 +14,7 @@ interface Item {
 }
 
 function App() {
-  const [items, setItems] = useState<Item[]>([
-    { name: "Milk", price: 24.0 },
-    { name: "Cereal", price: 230.0 },
-    { name: "Milo", price: 12.0 },
-  ]);
+  const [items, setItems] = useState<Item[]>([{ name: "42KL", price: 42.0 }]);
 
   const addItem = () => {
     const name = (
@@ -45,12 +41,12 @@ function App() {
           <div className="flex justify-between px-5 items-center">
             <img src="logoText.png" className="h-9" />
             <div className="px-4 py-1 rounded-lg bg-ocean">
-              <span className="font-medium text-cloud">Merchant</span>
+              <span className="text-cloud font-bold">Merchant</span>
             </div>
           </div>
         </div>
         <div className="min-h-[84vh] p-4 bg-sea text-center">
-          <h1 className="pt-8 text-3xl font-bold">SPH Store</h1>
+          <h1 className="pt-8 text-4xl italic font-bold">SPH Store</h1>
           <div className="pt-8">
             <div className="border-1 bg-cloud rounded-xl">
               <div className="flex justify-center pb-2 pt-5">
@@ -61,14 +57,14 @@ function App() {
                   <li className="flex flex-row justify-between">
                     <span>{item.name}</span>
                     <div className="flex flex-row gap-2">
-                      <span>${item.price}</span>
+                      <span>$ {item.price}</span>
                       <button
                         className="text-ocean rounded"
                         onClick={() => {
                           setItems(items.filter((i) => i !== item));
                         }}
                       >
-                        <LuXCircle size={25} />
+                        <LuXCircle size={25} color="red" />
                       </button>
                     </div>
                   </li>
@@ -78,7 +74,7 @@ function App() {
                   <span>Total</span>
                   <div className="flex flex-row gap-2">
                     <span>
-                      ${items.reduce((acc, item) => acc + item.price, 0)}
+                      $ {items.reduce((acc, item) => acc + item.price, 0)}
                     </span>
                     <div className="w-[25px]"></div>
                   </div>
@@ -91,12 +87,12 @@ function App() {
               <input
                 type="text"
                 placeholder="Item"
-                className="w-1/2 p-2 border rounded"
+                className="w-1/2 p-2 border border-none rounded"
               />
               <input
                 type="number"
                 placeholder="Price"
-                className="w-1/2 p-2 border rounded"
+                className="w-1/2 p-2 border border-none rounded"
               />
               <button
                 className="px-4 py-2 bg-ocean text-cloud rounded"
