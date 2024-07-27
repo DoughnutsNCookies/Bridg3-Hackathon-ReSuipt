@@ -63,8 +63,12 @@ function Home() {
     body: <></>,
   });
   const [mintLoading, setMintLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [appLoading, setAppLoading] = useState(false);
 
   const handleSignIn = () => {
+    setLoginLoading(true);
+
     const protocol = window.location.protocol;
     const host = window.location.host;
     // Set the redirect URL to the location that should
@@ -82,6 +86,7 @@ function Home() {
         },
       })
       .then((url) => {
+        setLoginLoading(false);
         window.location.href = url;
       })
       .catch((error) => {
@@ -90,16 +95,25 @@ function Home() {
   };
 
   const getWalletAddress = async () => {
-    const keypair = await enokiFlow.getKeypair({
-      network: "testnet",
-    });
+    setAppLoading(true);
 
+    let keypair;
+    try {
+      keypair = await enokiFlow.getKeypair({
+        network: "testnet",
+      });
+    } catch (error) {
+      setAppLoading(false);
+    }
+
+    if (!keypair) return;
     const address = keypair.toSuiAddress();
     // const address =
     //   "0x744f9472a847e597375f4213375f2911babbfb3ded6910041c17ac9c7fe24398";
 
     setWalletAddress(address);
     getPastReceipts(address);
+    setAppLoading(false);
   };
 
   useEffect(() => {
@@ -265,7 +279,10 @@ function Home() {
               showArrow
               size="lg"
             >
-              <div className="px-4 py-1 rounded-lg bg-ocean">
+              <Button
+                className="px-4 py-1 rounded-lg bg-ocean"
+                isLoading={loginLoading}
+              >
                 <Link
                   className="text-cloud font-bold gap-2"
                   showAnchorIcon={walletAddress ? true : false}
@@ -290,11 +307,38 @@ function Home() {
                       : "Login"
                   }`}
                 </Link>
-              </div>
+              </Button>
             </Tooltip>
           </div>
         </div>
         <div className="h-[84vh] bg-sea overflow-y-scroll pb-4">
+          {!appLoading ? (
+            <></>
+          ) : (
+            <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
+              <Image src="/logo.png" width={80} />
+              <div className="flex flex-col gap-2 text-center">
+                <span className="text-2xl font-bold italic text-cloud">
+                  Loggin In...
+                </span>
+              </div>
+            </div>
+          )}
+          {walletAddress !== "" ? (
+            <></>
+          ) : (
+            <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
+              <Image src="/logo.png" width={80} />
+              <div className="flex flex-col gap-2 text-center">
+                <span className="text-2xl font-bold italic text-cloud">
+                  Nothing to show...
+                </span>
+                <span className="text-xl font-bold">
+                  Login to view your receipts!
+                </span>
+              </div>
+            </div>
+          )}
           {isGetPastReceiptsLoading ? (
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
               <Image src="/logo.png" width={80} />

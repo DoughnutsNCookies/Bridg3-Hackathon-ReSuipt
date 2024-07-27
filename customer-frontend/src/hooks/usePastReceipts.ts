@@ -10,6 +10,7 @@ interface PastReceiptsData {
 export interface PastReceipt {
   timestamp: string;
   txDigest: string;
+  merchant: string;
   data: PastReceiptsData[];
 }
 
@@ -53,6 +54,8 @@ const usePastReceipts = (client: SuiClient) => {
       if (!((data.data.content as any).type as string).includes("Receipt"))
         continue;
 
+      const merchant = (data.data.content as any).fields.merchant;
+
       const df = await client.getDynamicFields({
         parentId: `${data.data.objectId}`,
       });
@@ -79,6 +82,7 @@ const usePastReceipts = (client: SuiClient) => {
       pastReceiptsRes.push({
         timestamp: dayjs(Number(txb.timestampMs)).format("DD/MM/YYYY HH:mm:ss"),
         txDigest: txb.digest,
+        merchant: merchant,
         data: pastReceiptsDataRes,
       });
     }
