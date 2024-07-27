@@ -24,6 +24,7 @@ import {
   ModalHeader,
   Tooltip,
   useDisclosure,
+  Image,
 } from "@nextui-org/react";
 
 interface ReceiptData {
@@ -285,6 +286,7 @@ function Home() {
         <div className="h-[84vh] bg-sea overflow-y-scroll pb-4">
           {isGetPastReceiptsLoading ? (
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
+              <Image src="/logo.png" width={80} />
               <span className="text-2xl font-bold italic text-cloud">
                 Receipts are loading...
               </span>
