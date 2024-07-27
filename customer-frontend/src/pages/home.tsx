@@ -17,7 +17,8 @@ function Home() {
   const [isScanOpen, setIsScanOpen] = useState(false);
   const [isMintOpen, setIsMintOpen] = useState(false);
   const [walletAddress, setWalletAddress] = useState<any>(null);
-  const [receiptData, setReceiptData] = useState<ReceiptData[]>([
+  const [receiptTxb, setReceiptTxb] = useState<any>(null);
+  const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
     { name: "42KL", price: 42 },
     { name: "Apple", price: 3 },
     { name: "Yes", price: 10 },
@@ -71,32 +72,69 @@ function Home() {
 
     setWalletAddress(keypair.toSuiAddress());
 
-    const txb = new Transaction();
-    const amount: number = 42;
+    const createReceiptTxb = new Transaction();
+    const total: number = receiptItems.reduce((acc, v) => acc + v.price, 0);
 
-    txb.moveCall({
+    console.log("(createReceiptTxb) moveCalling...");
+    createReceiptTxb.moveCall({
       target: `${packageId}::resuipt_contracts::createReceipt`,
-      arguments: [txb.object(keypair.toSuiAddress()), txb.pure(42)],
+      arguments: [
+        createReceiptTxb.object(keypair.toSuiAddress()),
+        createReceiptTxb.pure.u64(total),
+      ],
     });
 
-    txb.setGasBudget(100_000_000);
+    createReceiptTxb.setGasBudget(100_000_000);
 
-    const res = await client.signAndExecuteTransaction({
+    console.log("(createReceiptTxb) signAndExecuteTransaction...");
+    const createReceiptRes = await client.signAndExecuteTransaction({
       signer: keypair,
-      transaction: txb,
+      transaction: createReceiptTxb,
+      options: {
+        showEffects: true,
+      },
     });
 
-    console.log(packageId);
-    console.log(res);
+    setReceiptTxb(createReceiptRes.digest);
 
-    // setIsMintOpen(false);
-    // setReceiptData([]);
+    const resEffects: any = createReceiptRes.effects;
+    const receiptId = resEffects.created[0].reference.objectId;
+
+    console.log(`https://suiscan.xyz/testnet/object/${receiptId}`);
+
+    const dynamicFieldTxb = new Transaction();
+
+    console.log("(dynamicFieldTxb) moveCalling...");
+    for (let item of receiptItems) {
+      const itemName = item.name;
+      const itemPrice = item.price;
+
+      console.log(`(dynamicFieldTxb) adding ${itemName} of price ${itemPrice}`);
+      dynamicFieldTxb.moveCall({
+        target: `${packageId}::resuipt_contracts::addItemToReceipt`,
+        arguments: [
+          dynamicFieldTxb.object(receiptId),
+          dynamicFieldTxb.pure.string(itemName),
+          dynamicFieldTxb.pure.u64(itemPrice),
+        ],
+      });
+    }
+
+    dynamicFieldTxb.setGasBudget(100_000_000);
+
+    await client.signAndExecuteTransaction({
+      signer: keypair,
+      transaction: dynamicFieldTxb,
+      options: {
+        showEffects: true,
+      },
+    });
   };
 
   useEffect(() => {
-    if (receiptData.length === 0) setIsMintOpen(false);
+    if (receiptItems.length === 0) setIsMintOpen(false);
     else setIsMintOpen(true);
-  }, [receiptData]);
+  }, [receiptItems]);
 
   return (
     <div className="relative">
@@ -169,7 +207,7 @@ function Home() {
               const obj = JSON.parse(data[0].rawValue);
               console.log(obj);
               setIsScanOpen(false);
-              setReceiptData(obj);
+              setReceiptItems(obj);
             }}
             components={{ finder: false }}
             paused={!isScanOpen}
@@ -183,7 +221,7 @@ function Home() {
               <span className="font-semibold text-3xl">SPH Store</span>
             </div>
             <div className="py-4">
-              {receiptData.map((v, i) => {
+              {receiptItems.map((v, i) => {
                 return (
                   <div className="flex justify-between" key={i}>
                     <div>
@@ -201,7 +239,7 @@ function Home() {
                 </div>
                 <div>
                   <span className="font-semibold">
-                    $ {receiptData.reduce((acc, v) => acc + v.price, 0)}
+                    $ {receiptItems.reduce((acc, v) => acc + v.price, 0)}
                   </span>
                 </div>
               </div>
