@@ -188,6 +188,7 @@ function Home() {
     console.log("Done minting");
 
     onClose();
+    getPastReceipts(walletAddress);
   };
 
   useEffect(() => {
