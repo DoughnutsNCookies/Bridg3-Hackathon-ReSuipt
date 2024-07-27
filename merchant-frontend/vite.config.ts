@@ -7,11 +7,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      registerType: "prompt",
       includeAssets: ["192.png", "512.png"],
       manifest: {
-        name: "Suiecpts",
-        short_name: "Suiecpts",
-        description: "Best Project",
+        name: "ReSuipt Merchant",
+        short_name: "ReSuipt Merchant",
+        description: "ReSuipt Merchant App",
         theme_color: "#ffffff",
         icons: [
           {
@@ -27,7 +28,7 @@ export default defineConfig({
         ],
       },
       srcDir: "src",
-      registerType: "autoUpdate",
+      scope: "/",
       devOptions: { enabled: true },
     }),
   ],
