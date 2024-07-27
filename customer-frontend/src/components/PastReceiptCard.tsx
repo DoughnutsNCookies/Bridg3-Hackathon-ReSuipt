@@ -1,4 +1,3 @@
-import { LuCopy } from "react-icons/lu";
 import { PastReceipt } from "../hooks/usePastReceipts";
 import {
   Card,
@@ -21,15 +20,16 @@ const PastReceiptCard = (props: PastReceiptProps) => {
     <Card className="mt-4 mx-4" key={index}>
       <CardHeader className="text-center flex flex-col w-full">
         <p className="text-3xl font-semibold">SPH Store</p>
-        <div className="flex items-center gap-1">
-          <span className="text-xs opacity-30">
-            {pastReceipt.merchant.slice(0, 6)}....
-            {pastReceipt.merchant.slice(-4)}
-          </span>
-          <span className="text-xs opacity-30">
-            <LuCopy />
-          </span>
-        </div>
+        <Link
+          color="primary"
+          size="sm"
+          isExternal
+          href={`https://suiscan.xyz/testnet/account/${pastReceipt.merchant}`}
+          showAnchorIcon
+        >
+          Account: {pastReceipt.merchant.slice(0, 6)}....
+          {pastReceipt.merchant.slice(-4)}
+        </Link>
       </CardHeader>
       <Divider />
       <CardBody>
