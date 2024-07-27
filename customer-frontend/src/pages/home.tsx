@@ -5,7 +5,6 @@ import {
   LuSettings,
   LuCopy,
 } from "react-icons/lu";
-import ReceiptSvg from "../assets/ReceiptSvg";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { useEnokiFlow } from "@mysten/enoki/react";
@@ -15,21 +14,36 @@ import { Transaction } from "@mysten/sui/transactions";
 import usePastReceipts from "../hooks/usePastReceipts";
 import PastReceiptCard from "../components/PastReceiptCard";
 import SpinnerSvg from "../assets/SpinnerSvg";
+import {
+  Button,
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Tooltip,
+  useDisclosure,
+} from "@nextui-org/react";
 
 interface ReceiptData {
   name: string;
   price: number;
 }
 
+interface ModalFields {
+  header: React.ReactNode;
+  body: React.ReactNode;
+  mint?: boolean;
+}
+
 function Home() {
-  const [isScanOpen, setIsScanOpen] = useState(false);
-  const [isMintOpen, setIsMintOpen] = useState(false);
+  const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
-  const [receiptTxb, setReceiptTxb] = useState<any>(null);
   const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
-    // { name: "42KL", price: 42 },
-    // { name: "Apple", price: 3 },
-    // { name: "Yes", price: 10 },
+    { name: "42KL", price: 42 },
+    { name: "Apple", price: 33 },
+    { name: "Yes", price: 22 },
   ]);
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
@@ -38,6 +52,11 @@ function Home() {
     getPastReceipts,
     isLoading: isGetPastReceiptsLoading,
   } = usePastReceipts(client);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [modalFields, setModalFields] = useState<ModalFields>({
+    header: <></>,
+    body: <></>,
+  });
 
   const handleSignIn = () => {
     const protocol = window.location.protocol;
@@ -45,7 +64,6 @@ function Home() {
     // Set the redirect URL to the location that should
     // handle authorization callbacks in your app
     const redirectUrl = `${protocol}//${host}/google`;
-    console.log(redirectUrl);
 
     enokiFlow
       .createAuthorizationURL({
@@ -66,23 +84,21 @@ function Home() {
   };
 
   const getWalletAddress = async () => {
-    // const keypair = await enokiFlow.getKeypair({
-    //   network: "testnet",
-    // });
+    const keypair = await enokiFlow.getKeypair({
+      network: "testnet",
+    });
 
-    // const address = keypair.toSuiAddress();
-    const address =
-      "0x744f9472a847e597375f4213375f2911babbfb3ded6910041c17ac9c7fe24398";
+    const address = keypair.toSuiAddress();
+    // const address =
+    //   "0x744f9472a847e597375f4213375f2911babbfb3ded6910041c17ac9c7fe24398";
 
     setWalletAddress(address);
-
     getPastReceipts(address);
-
-    // Copy the wallet address to the clipboard
-    // navigator.clipboard.writeText(keypair.toSuiAddress());
   };
 
-  useEffect(() => {}, [walletAddress]);
+  useEffect(() => {
+    getWalletAddress();
+  }, []);
 
   const mint = async () => {
     console.log(enokiFlow);
@@ -112,8 +128,6 @@ function Home() {
       },
     });
 
-    setReceiptTxb(createReceiptRes.digest);
-
     const resEffects: any = createReceiptRes.effects;
     const receiptId = resEffects.created[0].reference.objectId;
 
@@ -137,8 +151,9 @@ function Home() {
       });
     }
 
-    dynamicFieldTxb.setGasBudget(10_000_000);
+    dynamicFieldTxb.setGasBudget(100_000_000);
 
+    console.log("(dynamicFieldTxb) signAndExecuteTransaction...");
     await client.signAndExecuteTransaction({
       signer: keypair,
       transaction: dynamicFieldTxb,
@@ -146,53 +161,134 @@ function Home() {
         showEffects: true,
       },
     });
+
+    setReceiptItems([]);
+    console.log("Done minting");
   };
 
   useEffect(() => {
-    if (receiptItems.length === 0) setIsMintOpen(false);
-    else setIsMintOpen(true);
+    if (receiptItems.length === 0) return;
+
+    setModalFields({
+      header: <p>SPH Store</p>,
+      body: (
+        <ul className="flex flex-col gap-2">
+          <div className="flex flex-row justify-between font-bold">
+            <span>Item Name</span>
+            <span>Price</span>
+          </div>
+          <div className="border border-ocean" />
+          {receiptItems.map((item) => (
+            <li className="flex flex-row justify-between">
+              <span>{item.name}</span>
+              <span>{item.price}</span>
+            </li>
+          ))}
+          {receiptItems.length === 0 && (
+            <li className="flex flex-row h-[30px] text-ocean/70 items-center justify-center">
+              <span>No items...</span>
+            </li>
+          )}
+          <div className="border border-ocean" />
+          <div className="flex flex-row justify-between font-bold text-lg">
+            <span>Total</span>
+            <span>
+              $ {receiptItems.reduce((acc, item) => acc + item.price, 0)}
+            </span>
+          </div>
+        </ul>
+      ),
+      mint: true,
+    });
+    onOpen();
   }, [receiptItems]);
 
+  // console.log("pauseScan:", pauseScan);
   return (
-    <div className="relative">
-      <div className="h-screen w-screen bg-sea">
-        <div className="h-[8vh] sticky top-0 flex flex-col justify-center bg-cloud rounded-bl-xl rounded-br-xl">
+    <div className="h-screen w-screen bg-sea justify-center flex">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>{modalFields.header}</ModalHeader>
+              <ModalBody>{modalFields.body}</ModalBody>
+              <ModalFooter>
+                <Button
+                  color="danger"
+                  onPress={onClose}
+                  className={`${modalFields.mint ? "hidden" : ""}`}
+                >
+                  Close
+                </Button>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={onClose}
+                  className={`${modalFields.mint ? "" : "hidden"}`}
+                >
+                  Close
+                </Button>
+                <Button
+                  color="success"
+                  onPress={mint}
+                  className={`text-cloud font-bold ${
+                    modalFields.mint ? "" : "hidden"
+                  }`}
+                >
+                  Mint
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <div className="w-full max-w-[425px]">
+        <div className="h-[8vh] sticky top-0 flex flex-col z-10 justify-center shadow-md bg-cloud rounded-bl-xl rounded-br-xl">
           <div className="flex justify-between px-5 items-center">
             <img src="logoText.png" className="h-9" />
-            <div
-              onClick={getWalletAddress}
-              className="px-4 py-1 rounded-lg bg-ocean"
+            <Tooltip
+              content="Copied!"
+              isOpen={copiedTooltip}
+              color="primary"
+              showArrow
+              size="lg"
             >
-              <span className="text-cloud font-bold">
-                {`${
-                  walletAddress
-                    ? `${walletAddress.slice(0, 6)}....${walletAddress.slice(
-                        -4
-                      )}`
-                    : "Customer"
-                }`}
-              </span>
-            </div>
+              <div className="px-4 py-1 rounded-lg bg-ocean">
+                <Link
+                  className="text-cloud font-bold gap-2"
+                  showAnchorIcon={walletAddress ? true : false}
+                  anchorIcon={<LuCopy />}
+                  onPress={() => {
+                    if (walletAddress) {
+                      navigator.clipboard.writeText(walletAddress);
+                      setCopiedTooltip(true);
+                      setTimeout(() => {
+                        setCopiedTooltip(false);
+                      }, 500);
+                    } else {
+                      handleSignIn();
+                    }
+                  }}
+                >
+                  {`${
+                    walletAddress
+                      ? `${walletAddress.slice(0, 6)}....${walletAddress.slice(
+                          -4
+                        )}`
+                      : "Login"
+                  }`}
+                </Link>
+              </div>
+            </Tooltip>
           </div>
         </div>
-        <div className="h-[84vh] bg-sea">
-          {/* <div className="h-full flex justify-center items-center flex-wrap">
-            <div>
-              <div className="flex justify-center">
-                <ReceiptSvg />
-              </div>
-              <div>
-                <span className="opacity-30">You dont have any receipts</span>
-              </div>
-            </div>
-          </div> */}
+        <div className="h-[84vh] bg-sea overflow-y-scroll pb-4">
           {isGetPastReceiptsLoading ? (
-            <div className="h-full flex justify-center items-center flex-wrap">
-              <div>
-                <div className="flex justify-center">
-                  <SpinnerSvg />
-                </div>
-              </div>
+            <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
+              <span className="text-2xl font-bold italic text-cloud">
+                Receipts are loading...
+              </span>
+              <SpinnerSvg />
             </div>
           ) : (
             pastReceipts.length > 0 &&
@@ -206,84 +302,62 @@ function Home() {
             ))
           )}
         </div>
-        <div className="h-[8vh] bg-cloud rounded-tl-xl rounded-tr-xl">
-          <div className="flex justify-between px-5 items-center pt-2">
-            <div>
+        <div
+          className="h-[8vh] sticky bottom-0 z-10 bg-cloud rounded-tl-xl rounded-tr-xl"
+          style={{
+            boxShadow:
+              "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
+          }}
+        >
+          <div className="flex justify-between px-2 items-center pt-2">
+            <div className="w-1/4 flex flex-col items-center">
               <div className="flex justify-center items-center">
                 <LuHome className="text-4xl" />
               </div>
               <span>Home</span>
             </div>
-            <button onClick={() => setIsScanOpen(true)}>
+            <button
+              className="w-1/4 flex flex-col items-center"
+              onClick={() => {
+                setModalFields({
+                  header: (
+                    <div className="flex flex-col">
+                      <span>ReSuipt QR Scanner</span>
+                      <span className="text-sm">
+                        Scan your merchant&apos;s QR to retrieve the ReSuipt!
+                      </span>
+                    </div>
+                  ),
+                  body: (
+                    <Scanner
+                      onScan={(data) => {
+                        console.log(data[0].rawValue);
+                        const obj = JSON.parse(data[0].rawValue);
+                        console.log(obj);
+                        setReceiptItems(obj);
+                      }}
+                    />
+                  ),
+                });
+                onOpen();
+              }}
+            >
               <div className="flex justify-center items-center">
                 <LuScanLine className="text-4xl" />
               </div>
               <span>Scan</span>
             </button>
-            <button onClick={handleSignIn}>
+            <button className="w-1/4 flex flex-col items-center">
               <div className="flex justify-center items-center">
                 <LuUser2 className="text-4xl" />
               </div>
-              <span>Login</span>
+              <span>Profile</span>
             </button>
-            <div>
+            <div className="w-1/4 flex flex-col items-center">
               <div className="flex justify-center items-center">
                 <LuSettings className="text-4xl" />
               </div>
               <span>Settings</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="h-[100vh] absolute top-0 bg-cloud" hidden={!isScanOpen}>
-        <div className="flex h-full justify-center items-center">
-          <Scanner
-            onScan={(data) => {
-              console.log(data[0].rawValue);
-              const obj = JSON.parse(data[0].rawValue);
-              console.log(obj);
-              setIsScanOpen(false);
-              setReceiptItems(obj);
-            }}
-            components={{ finder: false }}
-            paused={!isScanOpen}
-          />
-        </div>
-      </div>
-      <div className="absolute top-[50%] -translate-y-[50%] px-10 w-full">
-        <div className="bg-cloud w-full rounded-xl" hidden={!isMintOpen}>
-          <div className="p-3">
-            <div className="text-center">
-              <span className="font-semibold text-3xl">SPH Store</span>
-            </div>
-            <div className="py-4">
-              {receiptItems.map((v, i) => {
-                return (
-                  <div className="flex justify-between" key={i}>
-                    <div>
-                      <span>{v.name}</span>
-                    </div>
-                    <div>
-                      <span>$ {v.price}</span>
-                    </div>
-                  </div>
-                );
-              })}
-              <div className="flex justify-between">
-                <div>
-                  <span className="font-semibold">Total</span>
-                </div>
-                <div>
-                  <span className="font-semibold">
-                    $ {receiptItems.reduce((acc, v) => acc + v.price, 0)}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <button className="rounded-md w-full bg-aqua py-2" onClick={mint}>
-                Mint
-              </button>
             </div>
           </div>
         </div>
