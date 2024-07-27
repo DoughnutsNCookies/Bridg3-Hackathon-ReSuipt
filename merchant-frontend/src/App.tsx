@@ -6,7 +6,7 @@ import {
   LuHistory,
   LuXCircle,
 } from "react-icons/lu";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Item {
   name: string;
