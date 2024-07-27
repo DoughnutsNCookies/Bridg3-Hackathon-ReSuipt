@@ -26,6 +26,8 @@ import {
   useDisclosure,
   Image,
 } from "@nextui-org/react";
+import axios from "axios";
+import { fromB64 } from "@mysten/sui/utils";
 
 interface ReceiptData {
   name: string;
@@ -116,7 +118,7 @@ function Home() {
     getWalletAddress();
   }, []);
 
-  const mint = async (onClose: any) => {
+  const oldMint = async (onClose: any) => {
     console.log("Minting...");
     setMintLoading(true);
 
@@ -124,10 +126,7 @@ function Home() {
       network: "testnet",
     });
 
-    setWalletAddress(keypair.toSuiAddress());
-
     const createReceiptTxb = new Transaction();
-
     console.log("(createReceiptTxb) moveCalling...");
     createReceiptTxb.moveCall({
       target: `${packageId}::resuipt_contracts::createReceipt`,
@@ -178,6 +177,86 @@ function Home() {
         showEffects: true,
       },
     });
+
+    setReceiptItems([]);
+    setMintLoading(false);
+    console.log("Done minting");
+
+    onClose();
+    getPastReceipts(walletAddress);
+  };
+
+  const mint = async (onClose: any) => {
+    console.log("Minting...");
+    setMintLoading(true);
+
+    const keypair = await enokiFlow.getKeypair({
+      network: "testnet",
+    });
+
+    // Create Receipt...
+    const sponsorTxResCreateReceipt = await axios.post(
+      "http://localhost:8080/sponsorTxCreateReceipt",
+      {
+        address: walletAddress,
+      }
+    );
+
+    if (sponsorTxResCreateReceipt.status !== 200)
+      return console.error("Failed to call sponsorTxCreateReceipt");
+
+    const sponsorTxResCreateReceiptDigest =
+      sponsorTxResCreateReceipt.data.digest;
+    const sponsorTxResCreateReceiptBytes = sponsorTxResCreateReceipt.data.bytes;
+    const signatureCreateReceipt = await keypair.signTransaction(
+      fromB64(sponsorTxResCreateReceiptBytes)
+    );
+    if (!signatureCreateReceipt)
+      return console.error("Failed to sign sponsorTxResBytes");
+
+    const executeSponsorTxResCreateReceipt = await axios.post(
+      "http://localhost:8080/executeTx",
+      {
+        digest: sponsorTxResCreateReceiptDigest,
+        signature: signatureCreateReceipt.signature,
+        isLast: false,
+      }
+    );
+    if (executeSponsorTxResCreateReceipt.status !== 200)
+      return console.error("Failed to call executeSponsorTx");
+
+    // Add Item...
+    const objectId = executeSponsorTxResCreateReceipt.data.objectId;
+
+    const sponsorTxResAddItem = await axios.post(
+      "http://localhost:8080/sponsorTxAddItem",
+      {
+        address: walletAddress,
+        args: receiptItems.map((v) => ({
+          objectId: objectId,
+          itemName: v.name,
+          itemPrice: v.price,
+        })),
+      }
+    );
+
+    const sponsorTxResAddItemDigest = sponsorTxResAddItem.data.digest;
+    const sponsorTxResAddItemBytes = sponsorTxResAddItem.data.bytes;
+    const signatureAddItem = await keypair.signTransaction(
+      fromB64(sponsorTxResAddItemBytes)
+    );
+
+    const executeSponsorTxResAddItem = await axios.post(
+      "http://localhost:8080/executeTx",
+      {
+        digest: sponsorTxResAddItemDigest,
+        signature: signatureAddItem.signature,
+        isLast: true,
+      }
+    );
+
+    if (executeSponsorTxResAddItem.status !== 200)
+      return console.error("Failed to call executeSponsorTx");
 
     setReceiptItems([]);
     setMintLoading(false);
