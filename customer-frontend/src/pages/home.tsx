@@ -6,7 +6,6 @@ import { useEnokiFlow } from "@mysten/enoki/react";
 import { useSuiClient } from "@mysten/dapp-kit";
 import { packageId } from "../deployed-objects.json";
 import { Transaction } from "@mysten/sui/transactions";
-import { bcs } from "@mysten/sui/bcs";
 
 interface ReceiptData {
   name: string;
