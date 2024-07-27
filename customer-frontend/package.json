@@ -11,9 +11,14 @@
     "deploy": "tsx scripts/deploy.ts"
   },
   "dependencies": {
+    "@mysten/dapp-kit": "^0.14.13",
+    "@mysten/enoki": "^0.3.12",
     "@mysten/sui": "^1.3.1",
     "@mysten/sui.js": "^0.54.1",
+    "@mysten/zklogin": "^0.7.12",
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.25.1",
