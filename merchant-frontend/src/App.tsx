@@ -17,10 +17,7 @@ function App() {
         <div className="flex justify-between px-5 pt-10 items-center">
           <div className="flex max-h-full gap-2">
             <div className="h-full">
-              <img src="Logo_4.webp" className="h-9" />
-            </div>
-            <div>
-              <span className="text-3xl font-medium">ReSuipt</span>
+              <img src="logo2.webp" className="h-9" />
             </div>
           </div>
           <div>
