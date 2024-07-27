@@ -38,10 +38,6 @@ interface ModalFields {
   mint?: boolean;
 }
 
-/**
- * Minting Loading
- *
- */
 function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
