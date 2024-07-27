@@ -1,12 +1,15 @@
-import { useSuiClient } from "@mysten/dapp-kit";
-import { useAuthCallback, useEnokiFlow, useZkLogin } from "@mysten/enoki/react";
-import { useEffect } from "react";
+import { useAuthCallback } from "@mysten/enoki/react";
+import { useEffect, useState } from "react";
 
 function Google() {
-  const enokiFlow = useEnokiFlow(); // The EnokiFlow instance
+  const [loadingDots, setLoadingDots] = useState(0);
   const { handled } = useAuthCallback();
 
   useEffect(() => {
+    setInterval(() => {
+      setLoadingDots((prev) => (prev + 1) % 4);
+    }, 10);
+
     if (handled) {
       // Get access token, perform security checks,
       // manage user session, handle errors, and so on.
@@ -14,35 +17,15 @@ function Google() {
     }
   }, [handled]);
 
-  const handleSignIn = () => {
-    const protocol = window.location.protocol;
-    const host = window.location.host;
-    // Set the redirect URL to the location that should
-    // handle authorization callbacks in your app
-    const redirectUrl = `${protocol}//${host}/google`;
-    console.log(redirectUrl);
-
-    enokiFlow
-      .createAuthorizationURL({
-        provider: "google",
-        network: "testnet",
-        clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        redirectUrl,
-        extraParams: {
-          scope: ["openid", "email", "profile"],
-        },
-      })
-      .then((url) => {
-        window.location.href = url;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
-    <div className="h-screen flex flex-col gap-4 justify-center text-center items-center">
-      <button onClick={handleSignIn}>Sign In</button>
+    <div className="h-screen flex flex-col gap-4 justify-center text-center items-center bg-sea">
+      <span className="text-4xl font-bold">
+        Redirecting{".".repeat(Math.floor((Date.now() % 2700) / 800))}
+      </span>
+      <div>
+        <p className="text-xl">Please wait a moment</p>
+        <p className="text-xl">while we sign you in</p>
+      </div>
     </div>
   );
 }

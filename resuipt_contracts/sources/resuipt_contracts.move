@@ -50,7 +50,7 @@ module resuipt_contracts::resuipt_contracts {
 
 	/*
 		Customer will call from merchant's API
-		Dynamic Object Field
+		Dynamic Field
 		Addes an item to the receipt
 	*/
 	public fun addItemToReceipt(receipt: &mut Receipt, name: vector<u8>, price: u64) {
