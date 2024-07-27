@@ -305,9 +305,15 @@ function Home() {
             </div>
           ) : (
             pastReceipts.length > 0 &&
-            pastReceipts.map((v, i) => (
-              <PastReceiptCard pastReceipt={v} index={i} key={i} />
-            ))
+            pastReceipts
+              .sort((a, b) => {
+                const aTimestamp = a.timestamp;
+                const bTimestamp = b.timestamp;
+                return bTimestamp.localeCompare(aTimestamp);
+              })
+              .map((v, i) => (
+                <PastReceiptCard pastReceipt={v} index={i} key={i} />
+              ))
           )}
         </div>
         <div
