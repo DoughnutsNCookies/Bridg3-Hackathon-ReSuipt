@@ -38,6 +38,10 @@ interface ModalFields {
   mint?: boolean;
 }
 
+/**
+ * Minting Loading
+ *
+ */
 function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
@@ -58,6 +62,7 @@ function Home() {
     header: <></>,
     body: <></>,
   });
+  const [mintLoading, setMintLoading] = useState(false);
 
   const handleSignIn = () => {
     const protocol = window.location.protocol;
@@ -102,7 +107,8 @@ function Home() {
   }, []);
 
   const mint = async () => {
-    console.log(enokiFlow);
+    console.log("Minting...");
+    setMintLoading(true);
 
     const keypair = await enokiFlow.getKeypair({
       network: "testnet",
@@ -164,6 +170,7 @@ function Home() {
     });
 
     setReceiptItems([]);
+    setMintLoading(false);
     console.log("Done minting");
   };
 
@@ -231,10 +238,14 @@ function Home() {
                 </Button>
                 <Button
                   color="success"
-                  onPress={mint}
+                  onPress={() => {
+                    mint();
+                    onClose();
+                  }}
                   className={`text-cloud font-bold ${
                     modalFields.mint ? "" : "hidden"
                   }`}
+                  isLoading={mintLoading}
                 >
                   Mint
                 </Button>
