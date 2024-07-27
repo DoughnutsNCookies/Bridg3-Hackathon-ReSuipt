@@ -1,13 +1,10 @@
 import QRCode from "react-qr-code";
 import {
-  LuScanLine,
   LuHome,
-  LuTicket,
-  LuPieChart,
   LuUser2,
   LuSettings,
-  LuSettings2,
   LuHistory,
+  LuXCircle,
 } from "react-icons/lu";
 import { useEffect, useState } from "react";
 
@@ -58,11 +55,21 @@ function App() {
             <div className="flex justify-center pb-2 pt-5">
               <QRCode value={JSON.stringify(items)} className="h-[180px]" />
             </div>
-            <ul className="p-4">
+            <ul className="p-4 flex flex-col gap-2">
               {items.map((item) => (
                 <li className="flex flex-row justify-between">
                   <span>{item.name}</span>
-                  <span>${item.price}</span>
+                  <div className="flex flex-row gap-2">
+                    <span>${item.price}</span>
+                    <button
+                      className="text-ocean rounded"
+                      onClick={() => {
+                        setItems(items.filter((i) => i !== item));
+                      }}
+                    >
+                      <LuXCircle size={25} />
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
