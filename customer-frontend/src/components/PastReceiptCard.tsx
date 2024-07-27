@@ -1,4 +1,3 @@
-import { LuCopy } from "react-icons/lu";
 import { PastReceipt } from "../hooks/usePastReceipts";
 import {
   Card,
