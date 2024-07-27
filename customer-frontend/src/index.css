@@ -2,3 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.spinner_P7sC {
+  transform-origin: center;
+  animation: spinner_svv2 0.75s infinite linear;
+}
+@keyframes spinner_svv2 {
+  100% {
+    transform: rotate(360deg);
+  }
+}
