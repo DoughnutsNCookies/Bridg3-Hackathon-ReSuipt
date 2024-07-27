@@ -106,7 +106,7 @@ function Home() {
     getWalletAddress();
   }, []);
 
-  const mint = async () => {
+  const mint = async (onClose: any) => {
     console.log("Minting...");
     setMintLoading(true);
 
@@ -172,6 +172,8 @@ function Home() {
     setReceiptItems([]);
     setMintLoading(false);
     console.log("Done minting");
+
+    onClose();
   };
 
   useEffect(() => {
@@ -211,7 +213,6 @@ function Home() {
     onOpen();
   }, [receiptItems]);
 
-  // console.log("pauseScan:", pauseScan);
   return (
     <div className="h-screen w-screen bg-sea justify-center flex">
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
@@ -239,8 +240,7 @@ function Home() {
                 <Button
                   color="success"
                   onPress={() => {
-                    mint();
-                    onClose();
+                    mint(onClose);
                   }}
                   className={`text-cloud font-bold ${
                     modalFields.mint ? "" : "hidden"
