@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["logo.png", "logoText.png", "favicon.svg"],
+      includeAssets: ["icon.png", "logo.png", "logoText.png", "favicon.svg"],
       manifest: {
         name: "ReSuipt Merchant",
         short_name: "ReSuipt Merchant",
@@ -16,7 +16,7 @@ export default defineConfig({
         theme_color: "#ffffff",
         icons: [
           {
-            src: "logo.png",
+            src: "icon.png",
             sizes: "500x500",
             type: "image/png",
           },
