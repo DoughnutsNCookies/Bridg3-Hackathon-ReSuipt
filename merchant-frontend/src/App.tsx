@@ -73,6 +73,16 @@ function App() {
                     </div>
                   </li>
                 ))}
+                <div className="border border-ocean" />
+                <div className="flex flex-row justify-between font-bold">
+                  <span>Total</span>
+                  <div className="flex flex-row gap-2">
+                    <span>
+                      ${items.reduce((acc, item) => acc + item.price, 0)}
+                    </span>
+                    <div className="w-[25px]"></div>
+                  </div>
+                </div>
               </ul>
             </div>
           </div>
