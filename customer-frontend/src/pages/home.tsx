@@ -1,4 +1,10 @@
-import { LuScanLine, LuHome, LuUser2, LuSettings } from "react-icons/lu";
+import {
+  LuScanLine,
+  LuHome,
+  LuUser2,
+  LuSettings,
+  LuCopy,
+} from "react-icons/lu";
 import ReceiptSvg from "../assets/ReceiptSvg";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
@@ -6,6 +12,9 @@ import { useEnokiFlow } from "@mysten/enoki/react";
 import { useSuiClient } from "@mysten/dapp-kit";
 import { packageId } from "../deployed-objects.json";
 import { Transaction } from "@mysten/sui/transactions";
+import usePastReceipts from "../hooks/usePastReceipts";
+import PastReceiptCard from "../components/PastReceiptCard";
+import SpinnerSvg from "../assets/SpinnerSvg";
 
 interface ReceiptData {
   name: string;
@@ -15,15 +24,20 @@ interface ReceiptData {
 function Home() {
   const [isScanOpen, setIsScanOpen] = useState(false);
   const [isMintOpen, setIsMintOpen] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<any>(null);
+  const [walletAddress, setWalletAddress] = useState<string>("");
   const [receiptTxb, setReceiptTxb] = useState<any>(null);
   const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
-    { name: "42KL", price: 42 },
-    { name: "Apple", price: 3 },
-    { name: "Yes", price: 10 },
+    // { name: "42KL", price: 42 },
+    // { name: "Apple", price: 3 },
+    // { name: "Yes", price: 10 },
   ]);
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
+  const {
+    pastReceipts,
+    getPastReceipts,
+    isLoading: isGetPastReceiptsLoading,
+  } = usePastReceipts(client);
 
   const handleSignIn = () => {
     const protocol = window.location.protocol;
@@ -52,15 +66,23 @@ function Home() {
   };
 
   const getWalletAddress = async () => {
-    const keypair = await enokiFlow.getKeypair({
-      network: "testnet",
-    });
+    // const keypair = await enokiFlow.getKeypair({
+    //   network: "testnet",
+    // });
 
-    setWalletAddress(keypair.toSuiAddress());
+    // const address = keypair.toSuiAddress();
+    const address =
+      "0x744f9472a847e597375f4213375f2911babbfb3ded6910041c17ac9c7fe24398";
+
+    setWalletAddress(address);
+
+    getPastReceipts(address);
 
     // Copy the wallet address to the clipboard
-    navigator.clipboard.writeText(keypair.toSuiAddress());
+    // navigator.clipboard.writeText(keypair.toSuiAddress());
   };
+
+  useEffect(() => {}, [walletAddress]);
 
   const mint = async () => {
     console.log(enokiFlow);
@@ -115,7 +137,7 @@ function Home() {
       });
     }
 
-    dynamicFieldTxb.setGasBudget(100_000_000);
+    dynamicFieldTxb.setGasBudget(10_000_000);
 
     await client.signAndExecuteTransaction({
       signer: keypair,
@@ -154,7 +176,7 @@ function Home() {
           </div>
         </div>
         <div className="h-[84vh] bg-sea">
-          <div className="h-full flex justify-center items-center flex-wrap">
+          {/* <div className="h-full flex justify-center items-center flex-wrap">
             <div>
               <div className="flex justify-center">
                 <ReceiptSvg />
@@ -163,7 +185,26 @@ function Home() {
                 <span className="opacity-30">You dont have any receipts</span>
               </div>
             </div>
-          </div>
+          </div> */}
+          {isGetPastReceiptsLoading ? (
+            <div className="h-full flex justify-center items-center flex-wrap">
+              <div>
+                <div className="flex justify-center">
+                  <SpinnerSvg />
+                </div>
+              </div>
+            </div>
+          ) : (
+            pastReceipts.length > 0 &&
+            pastReceipts.map((v, i) => (
+              <PastReceiptCard
+                pastReceipt={v}
+                index={i}
+                length={pastReceipts.length}
+                key={i}
+              />
+            ))
+          )}
         </div>
         <div className="h-[8vh] bg-cloud rounded-tl-xl rounded-tr-xl">
           <div className="flex justify-between px-5 items-center pt-2">
