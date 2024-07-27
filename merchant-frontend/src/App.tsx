@@ -43,7 +43,7 @@ function App() {
       <div className="max-w-[425px]">
         <div className="h-[8vh] sticky top-0 flex flex-col justify-center bg-cloud rounded-bl-xl rounded-br-xl">
           <div className="flex justify-between px-5 items-center">
-            <img src="logo2.webp" className="h-9" />
+            <img src="logoText.png" className="h-9" />
             <div className="px-4 py-1 rounded-lg bg-ocean">
               <span className="font-medium text-cloud">Merchant</span>
             </div>
