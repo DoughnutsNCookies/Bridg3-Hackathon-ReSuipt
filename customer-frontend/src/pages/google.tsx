@@ -8,6 +8,7 @@ function Google() {
 
   useEffect(() => {
     setInterval(() => {
+      loadingDots;
       setLoadingDots((prev) => (prev + 1) % 4);
     }, 10);
 

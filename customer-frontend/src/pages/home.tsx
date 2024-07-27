@@ -178,8 +178,8 @@ function Home() {
             <span>Price</span>
           </div>
           <div className="border border-ocean" />
-          {receiptItems.map((item) => (
-            <li className="flex flex-row justify-between">
+          {receiptItems.map((item, index) => (
+            <li key={index} className="flex flex-row justify-between">
               <span>{item.name}</span>
               <span>{item.price}</span>
             </li>
@@ -293,12 +293,7 @@ function Home() {
           ) : (
             pastReceipts.length > 0 &&
             pastReceipts.map((v, i) => (
-              <PastReceiptCard
-                pastReceipt={v}
-                index={i}
-                length={pastReceipts.length}
-                key={i}
-              />
+              <PastReceiptCard pastReceipt={v} index={i} key={i} />
             ))
           )}
         </div>
