@@ -225,7 +225,7 @@ function Home() {
   }, [receiptItems]);
 
   return (
-    <div className="h-screen w-screen bg-sea justify-center flex">
+    <div className="h-screen w-screen bg-aqua justify-center flex">
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
         <ModalContent>
           {(onClose) => (
@@ -308,7 +308,7 @@ function Home() {
             </Tooltip>
           </div>
         </div>
-        <div className="h-[84vh] bg-sea overflow-y-scroll pb-4">
+        <div className="h-[84vh] bg-aqua overflow-y-scroll pb-4">
           {!appLoading ? (
             <></>
           ) : (

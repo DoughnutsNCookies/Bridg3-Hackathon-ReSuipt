@@ -25,6 +25,9 @@ const usePastReceipts = (client: SuiClient) => {
 
     setIsLoading(true);
 
+    /**
+     * REMEMBER TO REMOVE
+     */
     walletAddress =
       "0x744f9472a847e597375f4213375f2911babbfb3ded6910041c17ac9c7fe24398";
 
