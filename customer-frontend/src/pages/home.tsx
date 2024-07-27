@@ -72,15 +72,11 @@ function Home() {
     setWalletAddress(keypair.toSuiAddress());
 
     const createReceiptTxb = new Transaction();
-    const total: number = receiptItems.reduce((acc, v) => acc + v.price, 0);
 
     console.log("(createReceiptTxb) moveCalling...");
     createReceiptTxb.moveCall({
       target: `${packageId}::resuipt_contracts::createReceipt`,
-      arguments: [
-        createReceiptTxb.object(keypair.toSuiAddress()),
-        createReceiptTxb.pure.u64(total),
-      ],
+      arguments: [createReceiptTxb.object(keypair.toSuiAddress())],
     });
 
     createReceiptTxb.setGasBudget(100_000_000);

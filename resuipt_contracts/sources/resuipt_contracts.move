@@ -24,11 +24,11 @@ module resuipt_contracts::resuipt_contracts {
 		Customer
 		Creates a receipt
 	*/
-	public fun createReceipt(merchant: address, amount: u64, ctx: &mut TxContext) {
+	public fun createReceipt(merchant: address, ctx: &mut TxContext) {
 		let receipt = Receipt {
 			id: object::new(ctx),
 			merchant: merchant,
-			amount: amount,
+			amount: 0,
 		};
 		
 		// transfer::share_object(receipt);
@@ -36,7 +36,7 @@ module resuipt_contracts::resuipt_contracts {
 
 		event::emit(ReceiptCreated {
 			merchant: merchant,
-			amount: amount,
+			amount: 0,
 		});
 	}
 
