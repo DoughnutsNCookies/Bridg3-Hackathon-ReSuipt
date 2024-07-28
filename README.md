@@ -29,8 +29,6 @@ ReSuipt is a tool that digitalizes receipts with seamless experience using Sui. 
 
 ## Blockchain for Good
 
-- <b>Track 1: Security and Transparency </b> </br>
-<b>Goal:</b> Enhance the transparency, traceability, and security of business operations using blockchain technology <br><br>
 - <b> Track 2: Sustainable Development </b> </br>
 <b>Goal:</b> Promote sustainable development, addressing environmental issues and achieving economic sustainable growth <br><br>
 
