@@ -1,10 +1,4 @@
-import {
-  LuScanLine,
-  LuHome,
-  LuUser2,
-  LuSettings,
-  LuCopy,
-} from "react-icons/lu";
+import { LuScanLine, LuHome, LuUser2, LuCopy, LuLogOut } from "react-icons/lu";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { useEnokiFlow } from "@mysten/enoki/react";
@@ -361,6 +355,9 @@ function Home() {
               <Button
                 className="px-4 py-1 rounded-lg bg-ocean"
                 isLoading={loginLoading}
+                onDoubleClick={() => {
+                  console.log("double click");
+                }}
               >
                 <Link
                   className="text-cloud font-bold gap-2"
@@ -490,12 +487,18 @@ function Home() {
               </div>
               <span>Profile</span>
             </button>
-            <div className="w-1/4 flex flex-col items-center">
+            <button
+              onClick={() => {
+                sessionStorage.clear();
+                window.location.reload();
+              }}
+              className="w-1/4 flex flex-col items-center"
+            >
               <div className="flex justify-center items-center">
-                <LuSettings className="text-4xl" />
+                <LuLogOut className="text-4xl" />
               </div>
-              <span>Settings</span>
-            </div>
+              <span>LogOut</span>
+            </button>
           </div>
         </div>
       </div>
