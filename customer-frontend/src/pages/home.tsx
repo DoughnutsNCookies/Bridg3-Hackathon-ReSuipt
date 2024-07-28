@@ -118,73 +118,73 @@ function Home() {
     getWalletAddress();
   }, []);
 
-  const oldMint = async (onClose: any) => {
-    console.log("Minting...");
-    setMintLoading(true);
+  // const oldMint = async (onClose: any) => {
+  //   console.log("Minting...");
+  //   setMintLoading(true);
 
-    const keypair = await enokiFlow.getKeypair({
-      network: "testnet",
-    });
+  //   const keypair = await enokiFlow.getKeypair({
+  //     network: "testnet",
+  //   });
 
-    const createReceiptTxb = new Transaction();
-    console.log("(createReceiptTxb) moveCalling...");
-    createReceiptTxb.moveCall({
-      target: `${packageId}::resuipt_contracts::createReceipt`,
-      arguments: [createReceiptTxb.object(keypair.toSuiAddress())],
-    });
+  //   const createReceiptTxb = new Transaction();
+  //   console.log("(createReceiptTxb) moveCalling...");
+  //   createReceiptTxb.moveCall({
+  //     target: `${packageId}::resuipt_contracts::createReceipt`,
+  //     arguments: [createReceiptTxb.object(keypair.toSuiAddress())],
+  //   });
 
-    createReceiptTxb.setGasBudget(100_000_000);
+  //   createReceiptTxb.setGasBudget(100_000_000);
 
-    console.log("(createReceiptTxb) signAndExecuteTransaction...");
-    const createReceiptRes = await client.signAndExecuteTransaction({
-      signer: keypair,
-      transaction: createReceiptTxb,
-      options: {
-        showEffects: true,
-      },
-    });
+  //   console.log("(createReceiptTxb) signAndExecuteTransaction...");
+  //   const createReceiptRes = await client.signAndExecuteTransaction({
+  //     signer: keypair,
+  //     transaction: createReceiptTxb,
+  //     options: {
+  //       showEffects: true,
+  //     },
+  //   });
 
-    const resEffects: any = createReceiptRes.effects;
-    const receiptId = resEffects.created[0].reference.objectId;
+  //   const resEffects: any = createReceiptRes.effects;
+  //   const receiptId = resEffects.created[0].reference.objectId;
 
-    console.log(`https://suiscan.xyz/testnet/object/${receiptId}`);
+  //   console.log(`https://suiscan.xyz/testnet/object/${receiptId}`);
 
-    const dynamicFieldTxb = new Transaction();
+  //   const dynamicFieldTxb = new Transaction();
 
-    console.log("(dynamicFieldTxb) moveCalling...");
-    for (let item of receiptItems) {
-      const itemName = item.name;
-      const itemPrice = item.price;
+  //   console.log("(dynamicFieldTxb) moveCalling...");
+  //   for (let item of receiptItems) {
+  //     const itemName = item.name;
+  //     const itemPrice = item.price;
 
-      console.log(`(dynamicFieldTxb) adding ${itemName} of price ${itemPrice}`);
-      dynamicFieldTxb.moveCall({
-        target: `${packageId}::resuipt_contracts::addItemToReceipt`,
-        arguments: [
-          dynamicFieldTxb.object(receiptId),
-          dynamicFieldTxb.pure.string(itemName),
-          dynamicFieldTxb.pure.u64(itemPrice),
-        ],
-      });
-    }
+  //     console.log(`(dynamicFieldTxb) adding ${itemName} of price ${itemPrice}`);
+  //     dynamicFieldTxb.moveCall({
+  //       target: `${packageId}::resuipt_contracts::addItemToReceipt`,
+  //       arguments: [
+  //         dynamicFieldTxb.object(receiptId),
+  //         dynamicFieldTxb.pure.string(itemName),
+  //         dynamicFieldTxb.pure.u64(itemPrice),
+  //       ],
+  //     });
+  //   }
 
-    dynamicFieldTxb.setGasBudget(100_000_000);
+  //   dynamicFieldTxb.setGasBudget(100_000_000);
 
-    console.log("(dynamicFieldTxb) signAndExecuteTransaction...");
-    await client.signAndExecuteTransaction({
-      signer: keypair,
-      transaction: dynamicFieldTxb,
-      options: {
-        showEffects: true,
-      },
-    });
+  //   console.log("(dynamicFieldTxb) signAndExecuteTransaction...");
+  //   await client.signAndExecuteTransaction({
+  //     signer: keypair,
+  //     transaction: dynamicFieldTxb,
+  //     options: {
+  //       showEffects: true,
+  //     },
+  //   });
 
-    setReceiptItems([]);
-    setMintLoading(false);
-    console.log("Done minting");
+  //   setReceiptItems([]);
+  //   setMintLoading(false);
+  //   console.log("Done minting");
 
-    onClose();
-    getPastReceipts(walletAddress);
-  };
+  //   onClose();
+  //   getPastReceipts(walletAddress);
+  // };
 
   const mint = async (onClose: any) => {
     console.log("Minting...");
