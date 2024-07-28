@@ -194,9 +194,12 @@ function Home() {
       network: "testnet",
     });
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    if (!backendUrl) return;
+
     // Create Receipt...
     const sponsorTxResCreateReceipt = await axios.post(
-      "http://localhost:8080/sponsorTxCreateReceipt",
+      `${backendUrl}/sponsorTxCreateReceipt`,
       {
         address: walletAddress,
       }
@@ -215,7 +218,7 @@ function Home() {
       return console.error("Failed to sign sponsorTxResBytes");
 
     const executeSponsorTxResCreateReceipt = await axios.post(
-      "http://localhost:8080/executeTx",
+      `${backendUrl}/executeTx`,
       {
         digest: sponsorTxResCreateReceiptDigest,
         signature: signatureCreateReceipt.signature,
@@ -229,7 +232,7 @@ function Home() {
     const objectId = executeSponsorTxResCreateReceipt.data.objectId;
 
     const sponsorTxResAddItem = await axios.post(
-      "http://localhost:8080/sponsorTxAddItem",
+      `${backendUrl}/sponsorTxAddItem`,
       {
         address: walletAddress,
         args: receiptItems.map((v) => ({
@@ -247,7 +250,7 @@ function Home() {
     );
 
     const executeSponsorTxResAddItem = await axios.post(
-      "http://localhost:8080/executeTx",
+      `${backendUrl}/executeTx`,
       {
         digest: sponsorTxResAddItemDigest,
         signature: signatureAddItem.signature,
