@@ -1,5 +1,5 @@
 # Bridg3-Hackathon-ReSuipt
-![Text Logo (6)](https://github.com/user-attachments/assets/961ee304-7446-478b-a59c-b26c79188c56)
+![Text Logo (7)](https://github.com/user-attachments/assets/3699a1d1-8854-48cd-9024-0a1183dff269)
 
 ReSuipt is a tool that digitalizes receipts with seamless experience using Sui. Merchant decides the receipt data and customer could scan a QR code to retrieve the recept data and mint the receipt.
 
