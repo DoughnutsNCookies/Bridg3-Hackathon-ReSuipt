@@ -1,6 +1,6 @@
 import { LuScanLine, LuHome, LuUser2, LuCopy, LuLogOut } from "react-icons/lu";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useEnokiFlow } from "@mysten/enoki/react";
 import { useSuiClient } from "@mysten/dapp-kit";
 // import { packageId } from "../deployed-objects.json";
@@ -57,6 +57,8 @@ function Home() {
   const [mintLoading, setMintLoading] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [appLoading, setAppLoading] = useState(false);
+  const [mintDisabled, setMintDisabled] = useState(false);
+  const mintStatusRef = useRef<any>();
 
   const handleSignIn = () => {
     setLoginLoading(true);
@@ -189,6 +191,9 @@ function Home() {
     console.log("Minting...");
     setMintLoading(true);
 
+    if (!mintStatusRef.current) return;
+    const mintCurrent: any = mintStatusRef.current;
+
     const keypair = await enokiFlow.getKeypair({
       network: "testnet",
     });
@@ -197,6 +202,7 @@ function Home() {
     if (!backendUrl) return;
 
     // Create Receipt...
+    mintCurrent.innerText = "(1/6) Creating receipt...";
     const sponsorTxResCreateReceipt = await axios.post(
       `${backendUrl}/sponsorTxCreateReceipt`,
       {
@@ -207,6 +213,7 @@ function Home() {
     if (sponsorTxResCreateReceipt.status !== 200)
       return console.error("Failed to call sponsorTxCreateReceipt");
 
+    mintCurrent.innerText = "(2/6) Signing receipt transaction...";
     const sponsorTxResCreateReceiptDigest =
       sponsorTxResCreateReceipt.data.digest;
     const sponsorTxResCreateReceiptBytes = sponsorTxResCreateReceipt.data.bytes;
@@ -216,6 +223,7 @@ function Home() {
     if (!signatureCreateReceipt)
       return console.error("Failed to sign sponsorTxResBytes");
 
+    mintCurrent.innerText = "(3/6) Backend executing receipt transaction...";
     const executeSponsorTxResCreateReceipt = await axios.post(
       `${backendUrl}/executeTx`,
       {
@@ -230,6 +238,7 @@ function Home() {
     // Add Item...
     const objectId = executeSponsorTxResCreateReceipt.data.objectId;
 
+    mintCurrent.innerText = "(4/6) Adding items...";
     const sponsorTxResAddItem = await axios.post(
       `${backendUrl}/sponsorTxAddItem`,
       {
@@ -242,6 +251,7 @@ function Home() {
       }
     );
 
+    mintCurrent.innerText = "(5/6) Signing adding items transaction...";
     const sponsorTxResAddItemDigest = sponsorTxResAddItem.data.digest;
     const sponsorTxResAddItemBytes = sponsorTxResAddItem.data.bytes;
     const signatureAddItem = await keypair.signTransaction(
@@ -264,7 +274,13 @@ function Home() {
     setMintLoading(false);
     console.log("Done minting");
 
-    onClose();
+    mintCurrent.innerText = "(6/6) Done!";
+    setMintDisabled(true);
+
+    setTimeout(() => {
+      onClose();
+      setMintDisabled(false);
+    }, 1000);
     getPastReceipts(walletAddress);
   };
 
@@ -274,31 +290,36 @@ function Home() {
     setModalFields({
       header: <p>SPH Store</p>,
       body: (
-        <ul className="flex flex-col gap-2">
-          <div className="flex flex-row justify-between font-bold">
-            <span>Item Name</span>
-            <span>Price</span>
-          </div>
-          <div className="border border-ocean" />
-          {receiptItems.map((item, index) => (
-            <li key={index} className="flex flex-row justify-between">
-              <span>{item.name}</span>
-              <span>{item.price}</span>
-            </li>
-          ))}
-          {receiptItems.length === 0 && (
-            <li className="flex flex-row h-[30px] text-ocean/70 items-center justify-center">
-              <span>No items...</span>
-            </li>
-          )}
-          <div className="border border-ocean" />
-          <div className="flex flex-row justify-between font-bold text-lg">
-            <span>Total</span>
-            <span>
-              $ {receiptItems.reduce((acc, item) => acc + item.price, 0)}
-            </span>
-          </div>
-        </ul>
+        <div className="flex flex-col gap-8">
+          <ul className="flex flex-col gap-2">
+            <div className="flex flex-row justify-between font-bold">
+              <span>Item Name</span>
+              <span>Price</span>
+            </div>
+            <div className="border border-ocean" />
+            {receiptItems.map((item, index) => (
+              <li key={index} className="flex flex-row justify-between">
+                <span>{item.name}</span>
+                <span>{item.price}</span>
+              </li>
+            ))}
+            {receiptItems.length === 0 && (
+              <li className="flex flex-row h-[30px] text-ocean/70 items-center justify-center">
+                <span>No items...</span>
+              </li>
+            )}
+            <div className="border border-ocean" />
+            <div className="flex flex-row justify-between font-bold text-lg">
+              <span>Total</span>
+              <span>
+                $ {receiptItems.reduce((acc, item) => acc + item.price, 0)}
+              </span>
+            </div>
+          </ul>
+          <p ref={mintStatusRef} className="text-center">
+            Click the mint button to mint the receipt!
+          </p>
+        </div>
       ),
       mint: true,
     });
@@ -338,6 +359,7 @@ function Home() {
                     modalFields.mint ? "" : "hidden"
                   }`}
                   isLoading={mintLoading}
+                  isDisabled={mintDisabled}
                 >
                   Mint
                 </Button>
@@ -420,7 +442,7 @@ function Home() {
               </div>
             </div>
           )}
-          {walletAddress === "" && pastReceipts.length !== 0 ? (
+          {pastReceipts.length > 0 ? (
             <></>
           ) : (
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
