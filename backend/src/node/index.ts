@@ -5,6 +5,7 @@ import { EnokiClient } from "@mysten/enoki";
 import { getFullnodeUrl, SuiClient } from "@mysten/sui/client";
 import { toB64 } from "@mysten/sui/utils";
 import cors from "cors";
+import { packageId } from "../deployed-objects.json";
 
 interface SponsorTxCreateReceiptBody {
   address: string;
@@ -27,9 +28,14 @@ interface ExecuteTxBody {
   isLast: boolean;
 }
 
+interface sponsorTxCreateReceiptWithItemsBody {
+  address: string;
+  itemNames: string[];
+  itemPrices: number[];
+  itemCount: number;
+}
+
 const PORT = 8080;
-const packageId =
-  "0x0e7eece840c080abf86ab05e45c0893cbfbf20ee682dda96c647c6f001ffd1c3";
 const app = express();
 
 app.use(express.json());
@@ -37,7 +43,7 @@ app.use(express.json());
 app.use(cors({ origin: "*" }));
 
 const enokiClient = new EnokiClient({
-  apiKey: process.env.ENOKI_PIRVATE_KEY as string,
+  apiKey: process.env.ENOKI_PRIVATE_KEY as string,
 });
 const suiClient = new SuiClient({ url: getFullnodeUrl("testnet") });
 
@@ -125,6 +131,41 @@ app.post(
           `${packageId}::resuipt_contracts::addItemToReceipt`,
         ],
         allowedAddresses: [req.body.address],
+      });
+    res.send(sponsoredTransactionRes);
+  }
+);
+
+app.post(
+  "/sponsorTxCreateReceiptWithItems",
+  async (req: Request<{}, {}, sponsorTxCreateReceiptWithItemsBody>, res) => {
+    const { address, itemNames, itemPrices, itemCount } = req.body;
+
+    const tx = new Transaction();
+    tx.moveCall({
+      target: `${packageId}::resuipt_contracts::createReceiptWithItems`,
+      arguments: [
+        tx.object(address),
+        tx.pure.vector("string", itemNames),
+        tx.pure.vector("u64", itemPrices),
+        tx.pure.u64(itemCount),
+      ],
+    });
+
+    const txBytes = await tx.build({
+      client: suiClient,
+      onlyTransactionKind: true,
+    });
+
+    const sponsoredTransactionRes =
+      await enokiClient.createSponsoredTransaction({
+        network: "testnet",
+        transactionKindBytes: toB64(txBytes),
+        sender: address,
+        allowedMoveCallTargets: [
+          `${packageId}::resuipt_contracts::createReceiptWithItems`,
+        ],
+        allowedAddresses: [address],
       });
     res.send(sponsoredTransactionRes);
   }
