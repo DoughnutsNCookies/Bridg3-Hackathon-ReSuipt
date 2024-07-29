@@ -395,7 +395,12 @@ function Home() {
 
   return (
     <div className="h-screen w-screen bg-aqua justify-center flex">
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="center"
+        hideCloseButton={mintLoading}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -414,6 +419,7 @@ function Home() {
                   variant="light"
                   onPress={onClose}
                   className={`${modalFields.mint ? "" : "hidden"}`}
+                  isDisabled={mintLoading}
                 >
                   Close
                 </Button>
