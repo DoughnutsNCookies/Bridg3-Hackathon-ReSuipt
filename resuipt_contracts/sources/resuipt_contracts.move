@@ -41,6 +41,40 @@ module resuipt_contracts::resuipt_contracts {
 	}
 
 	/*
+		Customer
+		Creates a receipt with items
+	*/
+	public fun createReceiptWithItems(merchant: address, itemNames: vector<vector<u8>>, itemPrices: vector<u64>, itemCount: u64, ctx: &mut TxContext) {
+		let mut receipt = Receipt {
+			id: object::new(ctx),
+			merchant: merchant,
+			amount: 0,
+		};
+		
+		let mut i = 0;
+		while (i < itemCount) {
+			let name = itemNames[i];
+			let price = itemPrices[i];
+			
+			let itemObject = Item {
+				price: price
+			};
+
+			field::add(&mut receipt.id, name, itemObject);
+			receipt.amount = receipt.amount + price;
+
+			i = i + 1;
+		};
+
+		transfer::public_transfer(receipt, ctx.sender());
+
+		event::emit(ReceiptCreated {
+			merchant: merchant,
+			amount: 0,
+		});
+	}
+
+	/*
 		Used by addItemToReceipt
 		Increases the amount of the receipt by the price of the item
 	*/
