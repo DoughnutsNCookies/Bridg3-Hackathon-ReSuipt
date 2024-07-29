@@ -39,8 +39,8 @@ function Home() {
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
     // { name: "42KL", price: 42 },
-    // { name: "Apple", price: 33 },
-    // { name: "Yes", price: 22 },
+    // { name: "Milk", price: 3 },
+    // { name: "No", price: 5 },
   ]);
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
@@ -122,7 +122,7 @@ function Home() {
     getWalletAddress();
   }, []);
 
-  // const oldMint = async (onClose: any) => {
+  // const mintV1 = async (onClose: any) => {
   //   console.log("Minting...");
   //   setMintLoading(true);
 
@@ -190,7 +190,104 @@ function Home() {
   //   getPastReceipts(walletAddress);
   // };
 
-  const mint = async (onClose: any) => {
+  // const mintV2 = async (onClose: any) => {
+  //   console.log("Minting...");
+  //   setMintLoading(true);
+
+  //   if (!mintStatusRef.current) return;
+  //   const mintCurrent: any = mintStatusRef.current;
+
+  //   const keypair = await enokiFlow.getKeypair({
+  //     network: "testnet",
+  //   });
+
+  //   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  //   if (!backendUrl) return;
+
+  //   // Create Receipt...
+  //   mintCurrent.innerText = "(1/6) Creating receipt...";
+  //   const sponsorTxResCreateReceipt = await axios.post(
+  //     `${backendUrl}/sponsorTxCreateReceipt`,
+  //     {
+  //       address: walletAddress,
+  //     }
+  //   );
+
+  //   if (sponsorTxResCreateReceipt.status !== 200)
+  //     return console.error("Failed to call sponsorTxCreateReceipt");
+
+  //   mintCurrent.innerText = "(2/6) Signing receipt transaction...";
+  //   const sponsorTxResCreateReceiptDigest =
+  //     sponsorTxResCreateReceipt.data.digest;
+  //   const sponsorTxResCreateReceiptBytes = sponsorTxResCreateReceipt.data.bytes;
+  //   const signatureCreateReceipt = await keypair.signTransaction(
+  //     fromB64(sponsorTxResCreateReceiptBytes)
+  //   );
+  //   if (!signatureCreateReceipt)
+  //     return console.error("Failed to sign sponsorTxResBytes");
+
+  //   mintCurrent.innerText = "(3/6) Backend executing receipt transaction...";
+  //   const executeSponsorTxResCreateReceipt = await axios.post(
+  //     `${backendUrl}/executeTx`,
+  //     {
+  //       digest: sponsorTxResCreateReceiptDigest,
+  //       signature: signatureCreateReceipt.signature,
+  //       isLast: false,
+  //     }
+  //   );
+  //   if (executeSponsorTxResCreateReceipt.status !== 200)
+  //     return console.error("Failed to call executeSponsorTx");
+
+  //   // Add Item...
+  //   const objectId = executeSponsorTxResCreateReceipt.data.objectId;
+
+  //   mintCurrent.innerText = "(4/6) Adding items...";
+  //   const sponsorTxResAddItem = await axios.post(
+  //     `${backendUrl}/sponsorTxAddItem`,
+  //     {
+  //       address: walletAddress,
+  //       args: receiptItems.map((v) => ({
+  //         objectId: objectId,
+  //         itemName: v.name,
+  //         itemPrice: v.price,
+  //       })),
+  //     }
+  //   );
+
+  //   mintCurrent.innerText = "(5/6) Signing adding items transaction...";
+  //   const sponsorTxResAddItemDigest = sponsorTxResAddItem.data.digest;
+  //   const sponsorTxResAddItemBytes = sponsorTxResAddItem.data.bytes;
+  //   const signatureAddItem = await keypair.signTransaction(
+  //     fromB64(sponsorTxResAddItemBytes)
+  //   );
+
+  //   const executeSponsorTxResAddItem = await axios.post(
+  //     `${backendUrl}/executeTx`,
+  //     {
+  //       digest: sponsorTxResAddItemDigest,
+  //       signature: signatureAddItem.signature,
+  //       isLast: true,
+  //     }
+  //   );
+
+  //   if (executeSponsorTxResAddItem.status !== 200)
+  //     return console.error("Failed to call executeSponsorTx");
+
+  //   setReceiptItems([]);
+  //   setMintLoading(false);
+  //   console.log("Done minting");
+
+  //   mintCurrent.innerText = "(6/6) Done!";
+  //   setMintDisabled(true);
+
+  //   setTimeout(() => {
+  //     onClose();
+  //     setMintDisabled(false);
+  //   }, 1000);
+  //   getPastReceipts(walletAddress);
+  // };
+
+  const mintV3 = async (onClose: any) => {
     console.log("Minting...");
     setMintLoading(true);
 
@@ -205,85 +302,48 @@ function Home() {
     if (!backendUrl) return;
 
     // Create Receipt...
-    mintCurrent.innerText = "(1/6) Creating receipt...";
-    const sponsorTxResCreateReceipt = await axios.post(
-      `${backendUrl}/sponsorTxCreateReceipt`,
+    mintCurrent.innerText = "(1/3) Creating receipt...";
+    const sponsorTxResCreateReceiptWithItems = await axios.post(
+      `${backendUrl}/sponsorTxCreateReceiptWithItems`,
       {
         address: walletAddress,
+        itemNames: receiptItems.map((v) => v.name),
+        itemPrices: receiptItems.map((v) => v.price),
+        itemCount: receiptItems.length,
       }
     );
 
-    if (sponsorTxResCreateReceipt.status !== 200)
-      return console.error("Failed to call sponsorTxCreateReceipt");
+    if (sponsorTxResCreateReceiptWithItems.status !== 200)
+      return console.error("Failed to call sponsorTxCreateReceiptWithItems");
 
-    mintCurrent.innerText = "(2/6) Signing receipt transaction...";
-    const sponsorTxResCreateReceiptDigest =
-      sponsorTxResCreateReceipt.data.digest;
-    const sponsorTxResCreateReceiptBytes = sponsorTxResCreateReceipt.data.bytes;
-    const signatureCreateReceipt = await keypair.signTransaction(
-      fromB64(sponsorTxResCreateReceiptBytes)
+    mintCurrent.innerText = "(2/3) Signing receipt transaction...";
+    const sponsorTxResCreateReceiptWithItemsDigest =
+      sponsorTxResCreateReceiptWithItems.data.digest;
+    const sponsorTxResCreateReceiptWithItemsBytes =
+      sponsorTxResCreateReceiptWithItems.data.bytes;
+    const signatureCreateReceiptWithItems = await keypair.signTransaction(
+      fromB64(sponsorTxResCreateReceiptWithItemsBytes)
     );
-    if (!signatureCreateReceipt)
+    if (!signatureCreateReceiptWithItems)
       return console.error("Failed to sign sponsorTxResBytes");
 
-    mintCurrent.innerText = "(3/6) Backend executing receipt transaction...";
-    const executeSponsorTxResCreateReceipt = await axios.post(
+    mintCurrent.innerText = "(3/3) Backend executing receipt transaction...";
+    const executeSponsorTxResCreateReceiptWithItems = await axios.post(
       `${backendUrl}/executeTx`,
       {
-        digest: sponsorTxResCreateReceiptDigest,
-        signature: signatureCreateReceipt.signature,
-        isLast: false,
-      }
-    );
-    if (executeSponsorTxResCreateReceipt.status !== 200)
-      return console.error("Failed to call executeSponsorTx");
-
-    // Add Item...
-    const objectId = executeSponsorTxResCreateReceipt.data.objectId;
-
-    mintCurrent.innerText = "(4/6) Adding items...";
-    const sponsorTxResAddItem = await axios.post(
-      `${backendUrl}/sponsorTxAddItem`,
-      {
-        address: walletAddress,
-        args: receiptItems.map((v) => ({
-          objectId: objectId,
-          itemName: v.name,
-          itemPrice: v.price,
-        })),
-      }
-    );
-
-    mintCurrent.innerText = "(5/6) Signing adding items transaction...";
-    const sponsorTxResAddItemDigest = sponsorTxResAddItem.data.digest;
-    const sponsorTxResAddItemBytes = sponsorTxResAddItem.data.bytes;
-    const signatureAddItem = await keypair.signTransaction(
-      fromB64(sponsorTxResAddItemBytes)
-    );
-
-    const executeSponsorTxResAddItem = await axios.post(
-      `${backendUrl}/executeTx`,
-      {
-        digest: sponsorTxResAddItemDigest,
-        signature: signatureAddItem.signature,
+        digest: sponsorTxResCreateReceiptWithItemsDigest,
+        signature: signatureCreateReceiptWithItems.signature,
         isLast: true,
       }
     );
-
-    if (executeSponsorTxResAddItem.status !== 200)
+    if (executeSponsorTxResCreateReceiptWithItems.status !== 200)
       return console.error("Failed to call executeSponsorTx");
 
     setReceiptItems([]);
     setMintLoading(false);
     console.log("Done minting");
 
-    mintCurrent.innerText = "(6/6) Done!";
-    setMintDisabled(true);
-
-    setTimeout(() => {
-      onClose();
-      setMintDisabled(false);
-    }, 1000);
+    onClose();
     getPastReceipts(walletAddress);
   };
 
@@ -356,7 +416,7 @@ function Home() {
                 <Button
                   color="success"
                   onPress={() => {
-                    mint(onClose);
+                    mintV3(onClose);
                   }}
                   className={`text-cloud font-bold ${
                     modalFields.mint ? "" : "hidden"
