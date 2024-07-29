@@ -79,9 +79,11 @@ function Home() {
       })
       .then((url) => {
         setLoginLoading(false);
+        console.log("Redirecting to:", url);
         window.location.href = url;
       })
       .catch((error) => {
+        console.error("Failed to create authorization URL:", error);
         console.error(error);
       });
   };
@@ -91,17 +93,20 @@ function Home() {
 
     let keypair;
     try {
+      console.log("Client:", client);
+      console.log("Enoki Flow:", enokiFlow);
+      console.log("Getting Key Pair...");
       keypair = await enokiFlow.getKeypair({
         network: "testnet",
       });
     } catch (error) {
+      console.error("Getting Key Pair Failed:", error);
       setAppLoading(false);
     }
 
     if (!keypair) return;
+    console.log("Getting Sui Address...");
     const address = keypair.toSuiAddress();
-    // const address =
-    //   "0x744f9472a847e597375f4213375f2911babbfb3ded6910041c17ac9c7fe24398";
 
     setWalletAddress(address);
     getPastReceipts(address);
@@ -415,6 +420,21 @@ function Home() {
               </div>
             </div>
           )}
+          {walletAddress === "" && pastReceipts.length !== 0 ? (
+            <></>
+          ) : (
+            <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
+              <Image src="/logo.png" width={80} />
+              <div className="flex flex-col gap-2 text-center">
+                <span className="text-2xl font-bold italic text-cloud">
+                  No receipts found...
+                </span>
+                <span className="font-bold">
+                  Get your first receipt from a ReSuipt merchant!
+                </span>
+              </div>
+            </div>
+          )}
           {isGetPastReceiptsLoading ? (
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
               <Image src="/logo.png" width={80} />
@@ -489,7 +509,7 @@ function Home() {
             </button>
             <button
               onClick={() => {
-                sessionStorage.clear();
+                enokiFlow.logout();
                 window.location.reload();
               }}
               className="w-1/4 flex flex-col items-center"
