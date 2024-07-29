@@ -47,7 +47,7 @@ function App() {
       <div className="max-w-[425px]">
         <div className="h-[8vh] sticky top-0 z-10 flex flex-col justify-center shadow-md bg-cloud rounded-bl-xl rounded-br-xl">
           <div className="flex justify-between px-5 z-10 items-center">
-            <img src="logoText.png" className="h-9" />
+            <img src="logoMerchant.png" className="h-9" />
             <div className="px-4 py-1 rounded-lg bg-ocean">
               <span className="text-cloud font-bold">Merchant</span>
             </div>
