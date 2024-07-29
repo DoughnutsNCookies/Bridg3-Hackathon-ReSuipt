@@ -8,11 +8,13 @@
     "build": "tsc -b && vite build",
     "index": "npx vite-node src/node/index.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "tsx scripts/deploy.ts"
   },
   "dependencies": {
     "@mysten/enoki": "^0.3.12",
     "@mysten/sui": "^1.3.1",
+    "@mysten/sui.js": "^0.54.1",
     "axios": "^1.7.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -33,6 +35,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "tsx": "^4.16.2",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
   }
