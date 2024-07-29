@@ -8,7 +8,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["icon.png", "logo.png", "logoText.png", "favicon.svg"],
+      includeAssets: [
+        "icon.png",
+        "logo.png",
+        "logoText.png",
+        "logoCustomer.png",
+        "favicon.svg",
+      ],
       manifest: {
         name: "ReSuipt Customer",
         short_name: "ReSuipt Customer",

@@ -443,7 +443,7 @@ function Home() {
       <div className="w-full max-w-[425px]">
         <div className="h-[8vh] sticky top-0 flex flex-col z-10 justify-center shadow-md bg-cloud rounded-bl-xl rounded-br-xl">
           <div className="flex justify-between px-5 items-center">
-            <img src="logoText.png" className="h-9" />
+            <img src="logoCustomer.png" className="h-9" />
             <Tooltip
               content="Copied!"
               isOpen={copiedTooltip}
