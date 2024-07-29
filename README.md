@@ -46,6 +46,47 @@ These features are done with the [Enoki](https://docs.enoki.mystenlabs.com/ts-sd
 - Targetting <b>Sustainable Development</b></br>
 - <b>Goal:</b> Promote sustainable development, addressing environmental issues and achieving economic sustainable growth <br><br>
 
+Sustainable Development Goals (SDGs) that ReSuipt is targetting:
+
+> These are collapsable sections with some facts of the problem and the result of our solution
+
+<details>
+<summary>Goal 3: Good Health and Well-being</summary>
+<b>Problem</b>:
+<br>
+93% of paper receipts are made from thermal paper, coated with toxins (BPA/BPS)
+<br>
+<br>
+These are dangerous to reproductive systems in humans. Meaning high risk to pregnant, nursing women, infants, toddlers
+<br>
+<br>
+
+<b>Result</b>:
+By digitalizing receipts, we can reduce the use of thermal paper and reduce the risk of exposure to BPA/BPS
+
+</details>
+<details>
+	<summary>Goal 9: Industry, Innovation, and Infrastructure</summary>
+</details>
+<details>
+	<summary>Goal 10: Reduced Inequality</summary>
+</details>
+<details>
+	<summary>Goal 11: Sustainable Cities and Communities</summary>
+</details>
+<details>
+	<summary>Goal 12: Responsible Consumption and Production</summary>
+</details>
+<details>
+	<summary>Goal 13: Climate Action</summary>
+</details>
+<details>
+	<summary>Goal 14: Life Below Water</summary>
+</details>
+<details>
+	<summary>Goal 15: Life on Land</summary>
+</details>
+
 ## Prerequisite
 
 - node.js >= 20
@@ -75,7 +116,7 @@ npm run dev
 
 ### Customer frontend
 
-This will host the customer frontend on localhost at port `5174`
+This will host the customer frontend on localhost at port `5173`. If you've already hosted the merchant frontend from earlier, then it will default to port `5174` instead.
 
 ```bash
 cd customer-frontend
