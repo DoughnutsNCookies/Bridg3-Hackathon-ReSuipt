@@ -103,7 +103,10 @@ function Home() {
       });
     } catch (error) {
       console.error("Getting Key Pair Failed:", error);
-      setAppLoading(false);
+      const session = sessionStorage.getItem(
+        `@enoki/flow/session/${import.meta.env.VITE_ENOKI_API}`
+      );
+      if (!session) setAppLoading(false);
     }
 
     if (!keypair) return;
@@ -421,7 +424,7 @@ function Home() {
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
               <Image src="/logo.png" width={80} />
               <div className="flex flex-col gap-2 text-center">
-                <span className="text-2xl font-bold italic text-cloud">
+                <span className="text-2xl font-bold italic text-deepOcean">
                   Loggin In...
                 </span>
               </div>
@@ -433,7 +436,7 @@ function Home() {
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
               <Image src="/logo.png" width={80} />
               <div className="flex flex-col gap-2 text-center">
-                <span className="text-2xl font-bold italic text-cloud">
+                <span className="text-2xl font-bold italic text-deepOcean">
                   Nothing to show...
                 </span>
                 <span className="text-xl font-bold">
@@ -448,7 +451,7 @@ function Home() {
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
               <Image src="/logo.png" width={80} />
               <div className="flex flex-col gap-2 text-center">
-                <span className="text-2xl font-bold italic text-cloud">
+                <span className="text-2xl font-bold italic text-deepOcean">
                   No receipts found...
                 </span>
                 <span className="font-bold">
@@ -460,7 +463,7 @@ function Home() {
           {isGetPastReceiptsLoading ? (
             <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
               <Image src="/logo.png" width={80} />
-              <span className="text-2xl font-bold italic text-cloud">
+              <span className="text-2xl font-bold italic text-deepOcean">
                 Receipts are loading...
               </span>
               <SpinnerSvg />
