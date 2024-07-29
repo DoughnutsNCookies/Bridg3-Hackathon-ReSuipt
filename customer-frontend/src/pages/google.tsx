@@ -15,6 +15,7 @@ function Google() {
     if (handled) {
       // Get access token, perform security checks,
       // manage user session, handle errors, and so on.
+      console.log("User is signed in, redirecting to home page...");
       window.location.href = "/";
     }
   }, [handled]);
