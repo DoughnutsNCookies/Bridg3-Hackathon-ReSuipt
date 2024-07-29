@@ -38,9 +38,9 @@ function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
-    // { name: "42KL", price: 42 },
-    // { name: "Milk", price: 3 },
-    // { name: "No", price: 5 },
+    { name: "42KL", price: 42 },
+    { name: "Milk", price: 3 },
+    { name: "No", price: 5 },
   ]);
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
@@ -57,7 +57,6 @@ function Home() {
   const [mintLoading, setMintLoading] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [appLoading, setAppLoading] = useState(false);
-  const [mintDisabled, setMintDisabled] = useState(false);
   const mintStatusRef = useRef<any>();
 
   const handleSignIn = () => {
@@ -427,7 +426,6 @@ function Home() {
                     modalFields.mint ? "" : "hidden"
                   }`}
                   isLoading={mintLoading}
-                  isDisabled={mintDisabled}
                 >
                   Mint
                 </Button>
