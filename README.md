@@ -1,4 +1,5 @@
 # Bridg3-Hackathon-ReSuipt
+![Text Logo (7)](https://github.com/user-attachments/assets/3699a1d1-8854-48cd-9024-0a1183dff269)
 
 ReSuipt is a tool that digitalizes receipts with seamless experience using Sui. Merchant decides the receipt data and customer could scan a QR code to retrieve the recept data and mint the receipt.
 
@@ -25,6 +26,11 @@ ReSuipt is a tool that digitalizes receipts with seamless experience using Sui. 
 - [Enoki Sponsored Transaction](https://docs.enoki.mystenlabs.com/ts-sdk/sponsored-transactions)
 
 ![sponsor_tx_diagram](./sponsor_tx_diagram.png)
+
+## Blockchain for Good
+
+- <b> Track 2: Sustainable Development </b> </br>
+<b>Goal:</b> Promote sustainable development, addressing environmental issues and achieving economic sustainable growth <br><br>
 
 ## Prerequisite
 
