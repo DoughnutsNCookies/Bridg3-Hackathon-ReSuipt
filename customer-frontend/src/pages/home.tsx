@@ -38,9 +38,9 @@ function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
-    { name: "42KL", price: 42 },
-    { name: "Milk", price: 3 },
-    { name: "No", price: 5 },
+    // { name: "42KL", price: 42 },
+    // { name: "Milk", price: 3 },
+    // { name: "No", price: 5 },
   ]);
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
