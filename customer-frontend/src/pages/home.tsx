@@ -24,9 +24,14 @@ import axios from "axios";
 import { fromB64 } from "@mysten/sui/utils";
 import { useUser } from "../hooks/useUser";
 
-interface ReceiptData {
+interface ItemData {
   name: string;
   price: number;
+}
+
+interface ReceiptData {
+  items: ItemData[];
+  merchantAddress: string;
 }
 
 interface ModalFields {
@@ -38,12 +43,15 @@ interface ModalFields {
 function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
-  const [merchantAddress, setMerchantAddress] = useState<string>("");
-  const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
-    // { name: "42KL", price: 42 },
-    // { name: "Milk", price: 3 },
-    // { name: "No", price: 5 },
-  ]);
+  const [receiptData, setReceiptData] = useState<ReceiptData>({
+    items: [
+      { name: "42KL", price: 42 },
+      { name: "Milk", price: 3 },
+      { name: "No", price: 5 },
+    ],
+    merchantAddress:
+      "0x989db4b897b1f72d32c64c34ee16a3fb8532c4335a67e094ac2a0182abe33fc6",
+  });
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
   const {
@@ -282,13 +290,22 @@ function Home() {
 
     // Create Receipt...
     mintCurrent.innerText = "(1/3) Creating receipt...";
+    const { items, merchantAddress } = receiptData;
+    console.log({
+      customerAddress: walletAddress,
+      merchantAddress: merchantAddress,
+      itemNames: items.map((v) => v.name),
+      itemPrices: items.map((v) => v.price),
+      itemCount: items.length,
+    });
     const sponsorTxResCreateReceiptWithItems = await axios.post(
       `${backendUrl}/sponsorTxCreateReceiptWithItems`,
       {
-        address: merchantAddress,
-        itemNames: receiptItems.map((v) => v.name),
-        itemPrices: receiptItems.map((v) => v.price),
-        itemCount: receiptItems.length,
+        customerAddress: walletAddress,
+        merchantAddress: merchantAddress,
+        itemNames: items.map((v) => v.name),
+        itemPrices: items.map((v) => v.price),
+        itemCount: items.length,
       }
     );
 
@@ -321,7 +338,7 @@ function Home() {
     if (executeSponsorTxResCreateReceiptWithItems.status !== 200)
       return console.error("Failed to call executeSponsorTx");
 
-    setReceiptItems([]);
+    setReceiptData({ items: [], merchantAddress: "" });
     setMintLoading(false);
     console.log("Done minting");
 
@@ -330,7 +347,8 @@ function Home() {
   };
 
   useEffect(() => {
-    if (receiptItems.length === 0) return;
+    const { items } = receiptData;
+    if (items.length === 0) return;
 
     setModalFields({
       header: <p>SPH Store</p>,
@@ -342,13 +360,13 @@ function Home() {
               <span>Price</span>
             </div>
             <div className="border border-ocean" />
-            {receiptItems.map((item, index) => (
+            {items.map((item, index) => (
               <li key={index} className="flex flex-row justify-between">
                 <span>{item.name}</span>
                 <span>{item.price}</span>
               </li>
             ))}
-            {receiptItems.length === 0 && (
+            {items.length === 0 && (
               <li className="flex flex-row h-[30px] text-ocean/70 items-center justify-center">
                 <span>No items...</span>
               </li>
@@ -356,9 +374,7 @@ function Home() {
             <div className="border border-ocean" />
             <div className="flex flex-row justify-between font-bold text-lg">
               <span>Total</span>
-              <span>
-                $ {receiptItems.reduce((acc, item) => acc + item.price, 0)}
-              </span>
+              <span>$ {items.reduce((acc, item) => acc + item.price, 0)}</span>
             </div>
           </ul>
           <p ref={mintStatusRef} className="text-center">
@@ -369,7 +385,7 @@ function Home() {
       mint: true,
     });
     onOpen();
-  }, [receiptItems]);
+  }, [receiptData]);
 
   return (
     <div className="h-screen w-screen bg-aqua justify-center flex">
@@ -545,9 +561,7 @@ function Home() {
                         console.log(data[0].rawValue);
                         const obj = JSON.parse(data[0].rawValue);
                         console.log(obj);
-                        const { items, merchantAddress } = obj;
-                        setReceiptItems(items);
-                        setMerchantAddress(merchantAddress);
+                        setReceiptData(obj);
                       }}
                     />
                   ),
