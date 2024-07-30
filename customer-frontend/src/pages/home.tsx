@@ -307,9 +307,7 @@ function Home() {
       return console.error("Failed to sign sponsorTxResBytes");
 
     setTimeout(
-      () =>
-        (mintCurrent.innerText =
-          "(3/3) Backend executing receipt transaction..."),
+      () => (mintCurrent.innerText = "(3/3) Executing receipt transaction..."),
       1000
     );
     const executeSponsorTxResCreateReceiptWithItems = await axios.post(
