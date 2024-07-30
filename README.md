@@ -200,8 +200,7 @@ cd customer-frontend
 npm install
 npm run dev
 ```
-
-![customer_app](./readme/customer_app.png)
+![Frame 353](https://github.com/user-attachments/assets/82042639-cffd-4543-ab7f-b7c2d56077ba)
 
 ### Backend
 
