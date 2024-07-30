@@ -189,7 +189,7 @@ npm install
 npm run dev
 ```
 
-![merchant_app](./readme/merchant_app.png)
+![iMockup - iPhone 14 (2)](https://github.com/user-attachments/assets/c77c635d-ed65-4fb8-a2e5-afb2866048f4)
 
 ### Customer frontend
 
