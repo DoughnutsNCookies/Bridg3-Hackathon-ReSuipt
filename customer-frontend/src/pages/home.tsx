@@ -43,14 +43,18 @@ interface ModalFields {
 function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
+  // const [receiptData, setReceiptData] = useState<ReceiptData>({
+  //   items: [
+  //     { name: "42KL", price: 42 },
+  //     { name: "Milk", price: 3 },
+  //     { name: "No", price: 5 },
+  //   ],
+  //   merchantAddress:
+  //     "0x989db4b897b1f72d32c64c34ee16a3fb8532c4335a67e094ac2a0182abe33fc6",
+  // });
   const [receiptData, setReceiptData] = useState<ReceiptData>({
-    items: [
-      { name: "42KL", price: 42 },
-      { name: "Milk", price: 3 },
-      { name: "No", price: 5 },
-    ],
-    merchantAddress:
-      "0x989db4b897b1f72d32c64c34ee16a3fb8532c4335a67e094ac2a0182abe33fc6",
+    items: [],
+    merchantAddress: "",
   });
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
