@@ -22,6 +22,7 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { fromB64 } from "@mysten/sui/utils";
+import { useUser } from "../hooks/useUser";
 
 interface ReceiptData {
   name: string;
@@ -56,8 +57,9 @@ function Home() {
   });
   const [mintLoading, setMintLoading] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
-  const [appLoading, setAppLoading] = useState(false);
   const mintStatusRef = useRef<any>();
+
+  const userContext = useUser();
 
   const handleSignIn = () => {
     setLoginLoading(true);
@@ -89,37 +91,14 @@ function Home() {
       });
   };
 
-  const getWalletAddress = async () => {
-    setAppLoading(true);
-
-    let keypair;
-    try {
-      console.log("Client:", client);
-      console.log("Enoki Flow:", enokiFlow);
-      console.log("Getting Key Pair...");
-      keypair = await enokiFlow.getKeypair({
-        network: "testnet",
-      });
-    } catch (error) {
-      console.error("Getting Key Pair Failed:", error);
-      const session = sessionStorage.getItem(
-        `@enoki/flow/session/${import.meta.env.VITE_ENOKI_API}`
-      );
-      if (!session) setAppLoading(false);
-    }
-
-    if (!keypair) return;
-    console.log("Getting Sui Address...");
-    const address = keypair.toSuiAddress();
-
+  useEffect(() => {
+    console.log(userContext.user);
+    if (userContext.user.walletAddress === "") return;
+    const address = userContext.user.walletAddress;
+    console.log(address);
     setWalletAddress(address);
     getPastReceipts(address);
-    setAppLoading(false);
-  };
-
-  useEffect(() => {
-    getWalletAddress();
-  }, []);
+  }, [userContext.user.walletAddress]);
 
   // const mintV1 = async (onClose: any) => {
   //   console.log("Minting...");
@@ -485,18 +464,6 @@ function Home() {
           </div>
         </div>
         <div className="h-[84vh] bg-aqua overflow-y-scroll pb-4">
-          {!appLoading ? (
-            <></>
-          ) : (
-            <div className="h-full flex flex-col gap-4 justify-center items-center flex-wrap">
-              <Image src="/logo.png" width={80} />
-              <div className="flex flex-col gap-2 text-center">
-                <span className="text-2xl font-bold italic text-deepOcean">
-                  Loggin In...
-                </span>
-              </div>
-            </div>
-          )}
           {walletAddress !== "" ? (
             <></>
           ) : (
