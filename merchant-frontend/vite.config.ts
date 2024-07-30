@@ -13,7 +13,6 @@ export default defineConfig({
         "logo.png",
         "logoText.png",
         "logoMerchant.png",
-        "favicon.svg",
       ],
       manifest: {
         name: "ReSuipt Merchant",
