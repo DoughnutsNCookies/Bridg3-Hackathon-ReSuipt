@@ -38,6 +38,7 @@ interface ModalFields {
 function Home() {
   const [copiedTooltip, setCopiedTooltip] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string>("");
+  const [merchantAddress, setMerchantAddress] = useState<string>("");
   const [receiptItems, setReceiptItems] = useState<ReceiptData[]>([
     // { name: "42KL", price: 42 },
     // { name: "Milk", price: 3 },
@@ -284,7 +285,7 @@ function Home() {
     const sponsorTxResCreateReceiptWithItems = await axios.post(
       `${backendUrl}/sponsorTxCreateReceiptWithItems`,
       {
-        address: walletAddress,
+        address: merchantAddress,
         itemNames: receiptItems.map((v) => v.name),
         itemPrices: receiptItems.map((v) => v.price),
         itemCount: receiptItems.length,
@@ -546,7 +547,9 @@ function Home() {
                         console.log(data[0].rawValue);
                         const obj = JSON.parse(data[0].rawValue);
                         console.log(obj);
-                        setReceiptItems(obj);
+                        const { items, merchantAddress } = obj;
+                        setReceiptItems(items);
+                        setMerchantAddress(merchantAddress);
                       }}
                     />
                   ),
