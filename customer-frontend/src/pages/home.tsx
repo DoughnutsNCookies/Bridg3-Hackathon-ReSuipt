@@ -431,9 +431,6 @@ function Home() {
               <Button
                 className="px-4 py-1 rounded-lg bg-ocean"
                 isLoading={loginLoading}
-                onDoubleClick={() => {
-                  console.log("double click");
-                }}
               >
                 <Link
                   className="text-cloud font-bold gap-2"
