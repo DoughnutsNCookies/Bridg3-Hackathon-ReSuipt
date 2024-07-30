@@ -29,7 +29,8 @@ interface ExecuteTxBody {
 }
 
 interface sponsorTxCreateReceiptWithItemsBody {
-  address: string;
+  customerAddress: string;
+  merchantAddress: string;
   itemNames: string[];
   itemPrices: number[];
   itemCount: number;
@@ -139,13 +140,21 @@ app.post(
 app.post(
   "/sponsorTxCreateReceiptWithItems",
   async (req: Request<{}, {}, sponsorTxCreateReceiptWithItemsBody>, res) => {
-    const { address, itemNames, itemPrices, itemCount } = req.body;
+    const {
+      customerAddress,
+      merchantAddress,
+      itemNames,
+      itemPrices,
+      itemCount,
+    } = req.body;
+
+    console.log(req.body);
 
     const tx = new Transaction();
     tx.moveCall({
       target: `${packageId}::resuipt_contracts::createReceiptWithItems`,
       arguments: [
-        tx.object(address),
+        tx.object(merchantAddress),
         tx.pure.vector("string", itemNames),
         tx.pure.vector("u64", itemPrices),
         tx.pure.u64(itemCount),
@@ -161,11 +170,11 @@ app.post(
       await enokiClient.createSponsoredTransaction({
         network: "testnet",
         transactionKindBytes: toB64(txBytes),
-        sender: address,
+        sender: customerAddress,
         allowedMoveCallTargets: [
           `${packageId}::resuipt_contracts::createReceiptWithItems`,
         ],
-        allowedAddresses: [address],
+        allowedAddresses: [customerAddress],
       });
     res.send(sponsoredTransactionRes);
   }
