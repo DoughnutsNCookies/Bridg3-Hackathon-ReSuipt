@@ -5,8 +5,9 @@ import {
   LuSettings,
   LuHistory,
   LuXCircle,
+  LuCopy,
 } from "react-icons/lu";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -14,6 +15,8 @@ import {
   CardFooter,
   CardHeader,
   Input,
+  Link,
+  Tooltip,
 } from "@nextui-org/react";
 
 interface Item {
@@ -25,7 +28,9 @@ function App() {
   const [items, setItems] = useState<Item[]>([{ name: "42KL", price: 42.0 }]);
   const [itemName, setItemName] = useState<any>("");
   const [itemPrice, setItemPrice] = useState<any>("");
+  const [walletAddress, setWalletAddress] = useState<any>("");
   const priceRef = useRef<HTMLInputElement>(null);
+  const [copiedTooltip, setCopiedTooltip] = useState(false);
 
   const addItem = () => {
     const name = (
@@ -42,15 +47,48 @@ function App() {
     setItemPrice("");
   };
 
+  useEffect(() => {
+    const walletAddress = import.meta.env.VITE_MERCHANT_WALLET;
+    if (!walletAddress) return;
+    setWalletAddress(walletAddress);
+  }, []);
+
   return (
     <div className="h-screen w-screen bg-aqua flex justify-center">
       <div className="max-w-[425px]">
         <div className="h-[8vh] sticky top-0 z-10 flex flex-col justify-center shadow-md bg-cloud rounded-bl-xl rounded-br-xl">
           <div className="flex justify-between px-5 z-10 items-center">
             <img src="logoMerchant.png" className="h-9" />
-            <div className="px-4 py-1 rounded-lg bg-ocean">
-              <span className="text-cloud font-bold">Merchant</span>
-            </div>
+            <Tooltip
+              content="Copied!"
+              isOpen={copiedTooltip}
+              color="primary"
+              showArrow
+              size="lg"
+            >
+              <Button className="px-4 py-1 rounded-lg bg-ocean">
+                <Link
+                  className="text-cloud font-bold gap-2"
+                  showAnchorIcon={walletAddress ? true : false}
+                  anchorIcon={<LuCopy />}
+                  onPress={() => {
+                    navigator.clipboard.writeText(walletAddress);
+                    setCopiedTooltip(true);
+                    setTimeout(() => {
+                      setCopiedTooltip(false);
+                    }, 500);
+                  }}
+                >
+                  {`${
+                    walletAddress
+                      ? `${walletAddress.slice(0, 6)}....${walletAddress.slice(
+                          -4
+                        )}`
+                      : "Loading..."
+                  }`}
+                </Link>
+              </Button>
+            </Tooltip>
           </div>
         </div>
         <div className="min-h-[84vh] p-4 bg-aqua ">
