@@ -62,6 +62,7 @@ These are dangerous to reproductive systems in humans. Meaning high risk to preg
 <br>
 
 <b>Result</b>:
+<br>
 By digitalizing receipts, we can reduce the use of thermal paper and reduce the risk of exposure to BPA/BPS
 
 </details>
@@ -74,6 +75,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	Using ReSuipt can help bridge the digital divide by eliminating the need for complex wallet addresses or seed phrases, allowing everyone to access secure, decentralized financial services with the simplicity of familiar logins (such as Google login)
 
 </details>
@@ -86,6 +88,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	Digital receipts can be easily stored, searched, and analyzed, allowing users to track their expenses, manage budgets, and make informed financial decisions. regardless of their economic status
 	
 </details>
@@ -98,6 +101,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	By opting for digital receipts, we can save more than 10 million trees per year
 
 </details>
@@ -110,6 +114,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	By digitalising receipts, we could save 79.5 billion litres of water each year. This water conversation could sustain 2.9 million people, aligning with responsible consumption practices
 
 </details>
@@ -122,6 +127,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	Reduced carbon emissions contributes to global efforts to limit temperature rise to 1.5°C above pre-industrial levels, aligning with key climate action goals
 
 </details>
@@ -137,6 +143,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	By digitalising receipts, we can reduce the use of thermal paper and reduce the risk of toxic chemicals leeching into waterways, thereby protecting aquatic ecosystems and marine life from harmful contamination
 
 </details>
@@ -152,6 +159,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 	<br>
 
 <b>Result</b>:
+<br>
 	By digitaling receipts, we can reduce paper demand, thereby preserving biodiversity. Also, we can minimize soil contamination from receipt disposal
 
 </details>
