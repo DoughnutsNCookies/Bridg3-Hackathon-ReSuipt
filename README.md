@@ -1,4 +1,4 @@
-![Text Logo (7)](https://github.com/user-attachments/assets/3699a1d1-8854-48cd-9024-0a1183dff269)
+![Logo](./readme/textLogo.png)
 
 ## What is ReSuipt?
 
