@@ -67,24 +67,93 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 </details>
 <details>
 	<summary>Goal 9: Industry, Innovation, and Infrastructure</summary>
+	<b>Problem</b>:
+	<br>
+	The rapid shift towards digital technologies, might exacerbate the digital divide, potentially marginalizing lower-income populations who may lack access to necessray digital literacy skills
+	<br>
+	<br>
+
+<b>Result</b>:
+	Using ReSuipt can help bridge the digital divide by eliminating the need for complex wallet addresses or seed phrases, allowing everyone to access secure, decentralized financial services with the simplicity of familiar logins (such as Google login)
+
 </details>
 <details>
 	<summary>Goal 10: Reduced Inequality</summary>
+	<b>Problem</b>:
+	<br>
+	Lower-income individuals lacks financial literacy
+	<br>
+	<br>
+
+<b>Result</b>:
+	Digital receipts can be easily stored, searched, and analyzed, allowing users to track their expenses, manage budgets, and make informed financial decisions. regardless of their economic status
+	
 </details>
 <details>
 	<summary>Goal 11: Sustainable Cities and Communities</summary>
+	<b>Problem</b>:
+	<br>
+	More than 10 million trees are cut down each year purely for the production of paper receipts
+	<br>
+	<br>
+
+<b>Result</b>:
+	By opting for digital receipts, we can save more than 10 million trees per year
+
 </details>
 <details>
 	<summary>Goal 12: Responsible Consumption and Production</summary>
+	<b>Problem</b>:
+	<br>
+	79.5 billion litres of water are used each year in the process of producing of paper receipts
+	<br>
+	<br>
+
+<b>Result</b>:
+	By digitalising receipts, we could save 79.5 billion litres of water each year. This water conversation could sustain 2.9 million people, aligning with responsible consumption practices
+
 </details>
 <details>
 	<summary>Goal 13: Climate Action</summary>
+	<b>Problem</b>:
+	<br>
+	One paper receipt generates 4g of CO2. Transitioning from paper to digital receipts could significantly reduce carbon emissions
+	<br>
+	<br>
+
+<b>Result</b>:
+	Reduced carbon emissions contributes to global efforts to limit temperature rise to 1.5°C above pre-industrial levels, aligning with key climate action goals
+
 </details>
 <details>
 	<summary>Goal 14: Life Below Water</summary>
+	<b>Problem</b>:
+	<br>
+	93% of paper receipts are made from thermal paper, coated with toxins (BPA/BPS)
+	<br>
+	<br>
+	These toxins can leech into waterways, harming aquatic life
+	<br>
+	<br>
+
+<b>Result</b>:
+	By digitalising receipts, we can reduce the use of thermal paper and reduce the risk of toxic chemicals leeching into waterways, thereby protecting aquatic ecosystems and marine life from harmful contamination
+
 </details>
 <details>
 	<summary>Goal 15: Life on Land</summary>
+	<b>Problem</b>:
+	<br>
+	Paper receipt production contributes to deforestation, destroying habitats for terrestrial species
+	<br>
+	<br>
+	BPA/BPS used in thermal paper receipts can contaminate soil when improperly disposed
+	<br>
+	<br>
+
+<b>Result</b>:
+	By digitaling receipts, we can reduce paper demand, thereby preserving biodiversity. Also, we can minimize soil contamination from receipt disposal
+
 </details>
 
 ## Prerequisite
