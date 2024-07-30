@@ -188,8 +188,8 @@ cd merchant-frontend
 npm install
 npm run dev
 ```
+![Frame 352](https://github.com/user-attachments/assets/5c87e599-8a80-424b-89d8-b3727495d415)
 
-![iMockup - iPhone 14 (2)](https://github.com/user-attachments/assets/c77c635d-ed65-4fb8-a2e5-afb2866048f4)
 
 ### Customer frontend
 
