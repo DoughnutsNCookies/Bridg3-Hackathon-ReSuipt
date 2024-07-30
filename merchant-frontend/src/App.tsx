@@ -95,7 +95,13 @@ function App() {
           <Card className="py-4">
             <CardHeader className="justify-center flex flex-col gap-4 -z-9">
               <h1 className="text-4xl italic font-bold">SPH Store</h1>
-              <QRCode value={JSON.stringify(items)} className="h-[180px]" />
+              <QRCode
+                value={JSON.stringify({
+                  items: items,
+                  merchantAddress: walletAddress,
+                })}
+                className="h-[180px]"
+              />
             </CardHeader>
             <CardBody className="py-2">
               <ul className="p-4 flex flex-col gap-2">
