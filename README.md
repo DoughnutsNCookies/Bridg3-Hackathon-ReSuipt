@@ -2,7 +2,7 @@
 
 ## What is ReSuipt?
 
-ReSuipt is a tool that **digitalizes receipts** with **seamless experience using Sui**.
+ReSuipt is a tool that **digitalizes receipts** with **seamless user experience using Sui**.
 
 Merchant decides the receipt data and the customer could scan a QR code to retrieve the recept data and mint the receipt.
 
@@ -76,7 +76,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	Using ReSuipt can help bridge the digital divide by eliminating the need for complex wallet addresses or seed phrases, allowing everyone to access secure, decentralized financial services with the simplicity of familiar logins (such as Google login)
+Using ReSuipt can help bridge the digital divide by eliminating the need for complex wallet addresses or seed phrases, allowing everyone to access secure, decentralized financial services with the simplicity of familiar logins (such as Google login)
 
 </details>
 <details>
@@ -89,8 +89,8 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	Digital receipts can be easily stored, searched, and analyzed, allowing users to track their expenses, manage budgets, and make informed financial decisions. regardless of their economic status
-	
+Digital receipts can be easily stored, searched, and analyzed, allowing users to track their expenses, manage budgets, and make informed financial decisions. regardless of their economic status
+
 </details>
 <details>
 	<summary>Goal 11: Sustainable Cities and Communities</summary>
@@ -102,7 +102,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	By opting for digital receipts, we can save more than 10 million trees per year
+By opting for digital receipts, we can save more than 10 million trees per year
 
 </details>
 <details>
@@ -115,7 +115,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	By digitalising receipts, we could save 79.5 billion litres of water each year. This water conversation could sustain 2.9 million people, aligning with responsible consumption practices
+By digitalising receipts, we could save 79.5 billion litres of water each year. This water conversation could sustain 2.9 million people, aligning with responsible consumption practices
 
 </details>
 <details>
@@ -128,7 +128,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	Reduced carbon emissions contributes to global efforts to limit temperature rise to 1.5°C above pre-industrial levels, aligning with key climate action goals
+Reduced carbon emissions contributes to global efforts to limit temperature rise to 1.5°C above pre-industrial levels, aligning with key climate action goals
 
 </details>
 <details>
@@ -144,7 +144,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	By digitalising receipts, we can reduce the use of thermal paper and reduce the risk of toxic chemicals leeching into waterways, thereby protecting aquatic ecosystems and marine life from harmful contamination
+By digitalising receipts, we can reduce the use of thermal paper and reduce the risk of toxic chemicals leeching into waterways, thereby protecting aquatic ecosystems and marine life from harmful contamination
 
 </details>
 <details>
@@ -160,7 +160,7 @@ By digitalizing receipts, we can reduce the use of thermal paper and reduce the 
 
 <b>Result</b>:
 <br>
-	By digitaling receipts, we can reduce paper demand, thereby preserving biodiversity. Also, we can minimize soil contamination from receipt disposal
+By digitaling receipts, we can reduce paper demand, thereby preserving biodiversity. Also, we can minimize soil contamination from receipt disposal
 
 </details>
 

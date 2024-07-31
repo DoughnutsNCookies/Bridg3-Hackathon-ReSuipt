@@ -541,12 +541,17 @@ function Home() {
           }}
         >
           <div className="flex justify-between px-2 items-center pt-2">
-            <div className="w-1/4 flex flex-col items-center">
+            <button
+              className="w-1/4 flex flex-col items-center"
+              onClick={() => {
+                getPastReceipts(walletAddress);
+              }}
+            >
               <div className="flex justify-center items-center">
                 <LuHome className="text-4xl" />
               </div>
               <span>Home</span>
-            </div>
+            </button>
             <button
               className="w-1/4 flex flex-col items-center"
               onClick={() => {

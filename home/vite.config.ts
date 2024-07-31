@@ -15,9 +15,9 @@ export default defineConfig({
         "logoMerchant.png",
       ],
       manifest: {
-        name: "ReSuipt Merchant",
-        short_name: "ReSuipt Merchant",
-        description: "ReSuipt Merchant App",
+        name: "ReSuipt",
+        short_name: "ReSuipt",
+        description: "ReSuipt App",
         theme_color: "#ffffff",
         icons: [
           {
