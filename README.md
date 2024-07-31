@@ -188,7 +188,7 @@ cd merchant-frontend
 npm install
 npm run dev
 ```
-![Frame 352](https://github.com/user-attachments/assets/5c87e599-8a80-424b-89d8-b3727495d415)
+![Merchant App](./readme/merchant_app.png)
 
 
 ### Customer frontend
@@ -200,7 +200,7 @@ cd customer-frontend
 npm install
 npm run dev
 ```
-![Frame 353](https://github.com/user-attachments/assets/82042639-cffd-4543-ab7f-b7c2d56077ba)
+![Customer App](./readme/customer_app.png)
 
 ### Backend
 
