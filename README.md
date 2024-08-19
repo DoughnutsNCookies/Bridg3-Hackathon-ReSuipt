@@ -183,7 +183,7 @@ You'll need to host 3 different services to run the application.
 
 First setup the `.env` file in the `merchant-frontend` directory
 
-````bash
+```bash
 VITE_MERCHANT_WALLET=0xXXXXX
 ```
 
@@ -193,7 +193,7 @@ Then run these to host the merchant frontend on localhost at port `5173`
 cd merchant-frontend
 npm install
 npm run dev
-````
+```
 
 ![Merchant App](./readme/merchant_app.png)
 
