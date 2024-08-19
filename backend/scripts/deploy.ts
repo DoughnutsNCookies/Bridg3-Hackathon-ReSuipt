@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 import { fromB64 } from "@mysten/sui.js/utils";
-import { SuiClient, SuiObjectChange } from "@mysten/sui.js/client";
+import { SuiClient } from "@mysten/sui.js/client";
 import path, { dirname } from "path";
 import { execSync } from "child_process";
 import { fileURLToPath } from "url";
@@ -9,7 +9,7 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { writeFileSync } from "fs";
 
 console.log("Reading from .env...");
-const privKey = process.env.VITE_PRIVATE_KEY;
+const privKey = process.env.VITE_WALLET_PRIVATE_KEY;
 if (!privKey) {
   console.error("No private key provided");
   process.exit(1);

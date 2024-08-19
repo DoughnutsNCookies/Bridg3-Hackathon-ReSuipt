@@ -9,7 +9,7 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { writeFileSync } from "fs";
 
 console.log("Reading from .env...");
-const privKey = process.env.VITE_PRIVATE_KEY;
+const privKey = process.env.VITE_WALLET_PRIVATE_KEY;
 if (!privKey) {
   console.error("No private key provided");
   process.exit(1);
