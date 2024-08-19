@@ -188,8 +188,8 @@ cd merchant-frontend
 npm install
 npm run dev
 ```
+![Merchant App](./readme/merchant_app.png)
 
-![merchant_app](./readme/merchant_app.png)
 
 ### Customer frontend
 
@@ -200,8 +200,7 @@ cd customer-frontend
 npm install
 npm run dev
 ```
-
-![customer_app](./readme/customer_app.png)
+![Customer App](./readme/customer_app.png)
 
 ### Backend
 
