@@ -49,6 +49,7 @@ const enokiClient = new EnokiClient({
 const suiClient = new SuiClient({ url: getFullnodeUrl("testnet") });
 
 app.get("/", (req, res) => {
+  req.body;
   res.send("Hello world");
 });
 
