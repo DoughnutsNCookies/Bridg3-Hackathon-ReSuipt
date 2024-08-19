@@ -279,7 +279,3 @@ sui client publish
 - [@hiromasa0629](https://www.github.com/hiromasa0629)
 
 > Participants of Bridg3 Hackathon 2024
-
-```
-
-```
