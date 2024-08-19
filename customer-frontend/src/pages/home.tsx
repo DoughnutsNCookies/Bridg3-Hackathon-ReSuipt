@@ -23,6 +23,7 @@ import {
 import axios from "axios";
 import { fromB64 } from "@mysten/sui/utils";
 import { useUser } from "../hooks/useUser";
+import dayjs from "dayjs";
 
 interface ItemData {
   name: string;
@@ -524,9 +525,13 @@ function Home() {
             pastReceipts.length > 0 &&
             pastReceipts
               .sort((a, b) => {
-                const aTimestamp = a.timestamp;
-                const bTimestamp = b.timestamp;
-                return bTimestamp.localeCompare(aTimestamp);
+                const dateA = dayjs(a.timestamp, "DD/MM/YYYY HH:mm:ss")
+                  .toDate()
+                  .getTime();
+                const dateB = dayjs(b.timestamp, "DD/MM/YYYY HH:mm:ss")
+                  .toDate()
+                  .getTime();
+                return dateB - dateA;
               })
               .map((v, i) => (
                 <PastReceiptCard pastReceipt={v} index={i} key={i} />
