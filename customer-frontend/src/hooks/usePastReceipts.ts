@@ -16,6 +16,16 @@ export interface PastReceipt {
 
 const DECODER = new TextDecoder("utf-8");
 
+const parseDateToEpoch = (dateString: string): number => {
+  const [datePart, timePart] = dateString.split(" ");
+  const [day, month, year] = datePart.split("/").map(Number);
+  const [hours, minutes, seconds] = timePart.split(":").map(Number);
+
+  const date = new Date(year, month - 1, day, hours, minutes, seconds);
+
+  return date.getTime();
+};
+
 const usePastReceipts = (client: SuiClient) => {
   const [pastReceipts, setPastReceipts] = useState<PastReceipt[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +93,12 @@ const usePastReceipts = (client: SuiClient) => {
         data: pastReceiptsDataRes,
       });
     }
+
+    pastReceiptsRes.sort((a, b) => {
+      return parseDateToEpoch(b.timestamp) - parseDateToEpoch(a.timestamp);
+    });
+
+    console.log(pastReceiptsRes);
 
     setPastReceipts(pastReceiptsRes);
 
