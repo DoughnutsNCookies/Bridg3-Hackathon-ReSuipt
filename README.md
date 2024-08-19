@@ -181,30 +181,55 @@ You'll need to host 3 different services to run the application.
 
 ### Merchant frontend
 
-This will host the merchant frontend on localhost at port `5173`
+First setup the `.env` file in the `merchant-frontend` directory
+
+````bash
+VITE_MERCHANT_WALLET=0xXXXXX
+```
+
+Then run these to host the merchant frontend on localhost at port `5173`
 
 ```bash
 cd merchant-frontend
 npm install
 npm run dev
-```
-![Merchant App](./readme/merchant_app.png)
+````
 
+![Merchant App](./readme/merchant_app.png)
 
 ### Customer frontend
 
-This will host the customer frontend on localhost at port `5173`. If you've already hosted the merchant frontend from earlier, then it will default to port `5174` instead.
+First setup the `.env` file in the `customer-frontend` directory
+
+```bash
+VITE_WALLET_PRIVATE_KEY= # xxxxx
+VITE_SUI_URL= # https://fullnode.testnet.sui.io:443
+VITE_GOOGLE_CLIENT_ID= # xxx.apps.googleusercontent.com
+VITE_ENOKI_API= # enoki_private_xxxxx for zkLogin
+VITE_BACKEND_URL= # http://localhost:8080
+```
+
+Then host the customer frontend on localhost at port `5173`. If you've already hosted the merchant frontend from earlier, then it will default to port `5174` instead.
 
 ```bash
 cd customer-frontend
 npm install
 npm run dev
 ```
+
 ![Customer App](./readme/customer_app.png)
 
 ### Backend
 
-You will first need to deploy the contracts with the deploy script.
+First setup the `.env` file in the `backend` directory
+
+```bash
+ENOKI_PRIVATE_KEY= # enoki_private_xxxxx for Sponsored Transactions
+VITE_WALLET_PRIVATE_KEY= # xxxxx
+VITE_SUI_URL= # https://fullnode.testnet.sui.io:443
+```
+
+Then you will need to deploy the contracts with the deploy script.
 
 > The deploy script will save the packageId of the deployed contract in a file called `deployed-objects.json` which is stored in the `src/` directory.
 
@@ -254,3 +279,7 @@ sui client publish
 - [@hiromasa0629](https://www.github.com/hiromasa0629)
 
 > Participants of Bridg3 Hackathon 2024
+
+```
+
+```
